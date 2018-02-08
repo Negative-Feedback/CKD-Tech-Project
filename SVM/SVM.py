@@ -1,39 +1,22 @@
-import arff as larff
+import arff
 import numpy as np
-from scipy.io import arff
 from sklearn import svm
-from sklearn import linear_model
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import Imputer
 
-dataset = larff.load(open('C:/Users/Matthew/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff'))
+dataset = arff.load(open('C:/Users/Matthew/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff')) # loads the dataset
+#change the filepath to where yours is
+raw_data = np.array(dataset['data']) # pulls the data out into a numpy array
 
-raw_data = np.array(dataset['data'])
+data = raw_data[:, :-1] # takes everything except the last column
+target = raw_data[:, -1] # just the last column
 
+imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #fixes missing data by taking values from other rows and taking the average
+imp.fit(data) #iirc this fucntion takes the average
+data = imp.fit_transform(data) #inserts the average into the missing spots
 
-data = raw_data[:, :-1]
-target = raw_data[:, -1]
-
-#data = np.delete(data, -1, axis=1)
-
-imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
-imp.fit(data)
-
-data = imp.fit_transform(data)
-
-#enc.fit(data)
-#enc.fit(target)
-
-
-
-#print(data.shape, target.shape)
-#print(data)
-#print(target)
-
-
-
-data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3)
+data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3) #breaks the dataset into test and training data
+#30% of data is test data
 
 
 clf = svm.SVC()
