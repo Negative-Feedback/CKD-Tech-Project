@@ -3,6 +3,7 @@ import numpy as np
 from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
+from sklearn.metrics import accuracy_score
 
 dataset = arff.load(open('C:/Users/Matthew/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff')) # loads the dataset
 #change the filepath to where yours is
@@ -21,3 +22,5 @@ data_train, data_test, target_train, target_test = train_test_split(data, target
 
 clf = svm.SVC()
 clf.fit(data_train, target_train)
+predicted = clf.predict(data_test)
+print(accuracy_score(target_test, predicted))
