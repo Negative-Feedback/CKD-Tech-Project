@@ -22,7 +22,15 @@ model = LogisticRegression()
 model = model.fit(data_train, target_train)
 
 # check the accuracy on the training set
-
 temp = model.score(data_train, target_train)
-
 print(str(temp * 100) + '%')
+
+
+model.fit(data_train, target_train)
+prediction = model.predict(data_test)
+accuracy = 0.
+for n in range(target_test.size):
+    if target_test[n] == prediction[n]:
+        accuracy += 1.
+accuracy /= target_test.size
+print("The predictions were " + str(accuracy * 100.) + "% accurate")
