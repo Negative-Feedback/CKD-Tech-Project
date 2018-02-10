@@ -19,8 +19,16 @@ data = imp.fit_transform(data) #inserts the average into the missing spots
 data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3) #breaks the dataset into test and training data
 #30% of data is test data
 
+total = 0
+for x in range(0, 100):
+    clf = svm.SVC(C=1.5, kernel='linear', decision_function_shape='ovo', random_state= 1)
+    clf.fit(data_train, target_train)
+    predicted = clf.predict(data_test)
+    total += accuracy_score(target_test, predicted)
 
-clf = svm.SVC()
-clf.fit(data_train, target_train)
-predicted = clf.predict(data_test)
-print(accuracy_score(target_test, predicted))
+total /= 100
+
+print(predicted)
+print(target_test)
+print(np.array_equal(predicted, target_test))
+print(total)
