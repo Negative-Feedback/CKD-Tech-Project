@@ -22,6 +22,4 @@ data_train, data_test, target_train, target_test = train_test_split(data, target
 clf = neighbors.KNeighborsClassifier()
 clf.fit(data_train, target_train)
 predicted = clf.predict(data_test)
-print(accuracy_score(target_test, predicted))
-
-
+print("Accuracy:" , accuracy_score(target_test, predicted))

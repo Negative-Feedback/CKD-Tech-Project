@@ -19,7 +19,6 @@ data = imp.fit_transform(data) #inserts the average into the missing spots
 data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3) #breaks the dataset into test and training data
 #30% of data is test data
 
-
 clf = svm.SVC()
 clf.fit(data_train, target_train)
 predicted = clf.predict(data_test)
