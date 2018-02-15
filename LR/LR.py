@@ -18,15 +18,14 @@ data = imp.fit_transform(data) #inserts the average into the missing spots
 data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3) #breaks the dataset into test and training data
 #30% of data is test data
 
-model = LogisticRegression()
-model = model.fit(data_train, target_train)
-
-# check the accuracy on the training set
+model = LogisticRegression() #Creates a copy of te function LogisticRegression and names it as model
+model = model.fit(data_train, target_train) #Fits the data of data_train and target_train on the model
+# check the accuracy on the training set using score
 temp = model.score(data_train, target_train)
 print(str(temp * 100) + '%')
 
-
-model.fit(data_train, target_train)
+# check the accuracy on the training set using 
+#model.fit(data_train, target_train)
 prediction = model.predict(data_test)
 accuracy = 0.
 for n in range(target_test.size):
