@@ -24,17 +24,18 @@ data_train, data_test, target_train, target_test = train_test_split(data, target
 
 
 total = 0 # counter to hold the results of all the runs
+run = 1 # this makes it so that i can adjust the how man times the loop runs with out manually changing what temp is divided by
 
 #this for loop is used to average get an average accuracy
 #For some reason we get slightly different accuracies each time we run the same thing. we are looking into why this happens
 #so this loop allows us to know if our changes increase or decrease accuracy
-for x in range(0, 1):
+for x in range(0, run):
     clf = svm.SVC(C = 1, kernel='linear', decision_function_shape='ovo', random_state= 6)
     clf.fit(data_train, target_train)
     predicted = clf.predict(data_test)
     total += accuracy_score(target_test, predicted) *100
 
-total /= 100
+total /= run
 
 
 print(total)
