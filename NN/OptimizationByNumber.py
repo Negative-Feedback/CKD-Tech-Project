@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import f1_score
+from imblearn.over_sampling import SMOTE
 
 # open the arff file
 dataset = arff.load(open('ckd.arff'))
@@ -26,6 +27,7 @@ imp.fit(data)
 # inserts the average into the missing spots
 data = imp.fit_transform(data)
 
+data, target = SMOTE().fit_sample(data, target)
 
 # Function that creates the neural network 100 times and takes the average of its F1 score
 def aveaccuracy(_data, _target, _hlayers):
@@ -49,7 +51,7 @@ def aveaccuracy(_data, _target, _hlayers):
 
 
 # 16, 14, 11 is the best so far, 6,3 was the best for 2 layers
-hlayers = [(6, 3), (16, 14, 11)]
+hlayers = [(10, 7, 5)]
 
 # temporary values to be replaced
 ideal = [0, 0, 0]

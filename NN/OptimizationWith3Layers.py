@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import f1_score
+from imblearn.over_sampling import SMOTE
 
 # open the arff file
 dataset = arff.load(open('ckd.arff'))
@@ -25,6 +26,8 @@ imp.fit(data)
 
 # inserts the average into the missing spots
 data = imp.fit_transform(data)
+
+data, target = SMOTE().fit_sample(data, target)
 
 
 # Function that creates the neural network 100 times and takes the average of its F1 score
@@ -56,4 +59,4 @@ for x in range(3, 20):
                 print("The predictions were " + str(temp) + "% accurate on average for " + str([x, y, z]))
 
 # print the highest accuracy one
-print(str(ideal) + " gives " + maxi + "% accuracy")
+print(str(ideal) + " gives " + str(maxi) + "% accuracy")
