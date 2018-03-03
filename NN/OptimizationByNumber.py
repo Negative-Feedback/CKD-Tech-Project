@@ -11,22 +11,13 @@ from sklearn.metrics import recall_score
 from sklearn.metrics import roc_curve
 from sklearn.metrics.scorer import make_scorer
 from imblearn.over_sampling import SMOTE
+import metrics
 
-def tp(y_true, y_pred): return confusion_matrix(y_true, y_pred, labels=['0', '1'])[1, 1]
-def tn(y_true, y_pred): return confusion_matrix(y_true, y_pred)[0, 0]
-def fp(y_true, y_pred): return confusion_matrix(y_true, y_pred)[1, 0]
-def fn(y_true, y_pred): return confusion_matrix(y_true, y_pred)[0, 1]
-def specificity(y_true, y_pred):
-    return tn(y_true, y_pred) / (tn(y_true, y_pred) + fp(y_true, y_pred))
-def f1(y_true, y_pred):
-    return f1_score(y_true, y_pred, pos_label='1')
-def sensitivity(y_true, y_pred):
-    return recall_score(y_true, y_pred, pos_label='1')
-def precision(y_true, y_pred):
-    return precision_score(y_true, y_pred, pos_label='1')
-def roc(y_true, y_pred):
-    return roc_curve(y_true, y_pred, pos_label='1')
+import sys
+sys.path.insert(0, '/NN')
+import OptimizationMethods
 
+# classification threshold
 
 # open the arff file
 dataset = arff.load(open('ckd.arff'))
@@ -72,16 +63,7 @@ def aveaccuracy(_data, _target, _hlayers):
         # return the accuracy and its standard deviation
     return [toreturn, np.std(accuracy)]
 
-def crossValidatedScores(data, target, hlayers):
-    data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3)
-    clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=hlayers, random_state=1)
-    scoring = {'tp': make_scorer(tp), 'tn': make_scorer(tp),
-               'fp': make_scorer(fp), 'fn': make_scorer(fn),
-               'f1': make_scorer(f1), 'precision': make_scorer(precision),
-               'sensitivity': make_scorer(sensitivity), 'specificity': make_scorer(specificity)}
-               #'ROC': make_scorer(roc)}
-    results = cross_validate(clf.fit(data_train, target_train), data_test, target_test, scoring=scoring, cv=10)
-    return results
+
 
 
 # 16, 14, 11 is the best so far, 6,3 was the best for 2 layers
@@ -93,10 +75,11 @@ maxi = {'test_f1': 0}
 # graph = np.zeros(hlayers.count)
 
 # find the average F1 score and its standard deviation for all the layer sizes
-print("hlayers tp tn fp fn f1 precision sensitivity specificity")
+print("hlayers/tp/tn/fp/fn/f1/precision/sensitivity/specificity")
 for x in hlayers:
-    temp = crossValidatedScores(data, target, x)
-    print()
+    temp = metrics.crossValidatedScores(data, target,
+                                        MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1))
+    metrics.printAverages(x, temp)
     '''
     if temp['test_f1'] > maxi['test_f1']:
         maxi = temp
