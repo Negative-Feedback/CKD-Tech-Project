@@ -58,10 +58,12 @@ def getAccuracy(testSet, predictions):
     return (correct/float(len(testSet))) * 100.0
 
 def Main():
+
     print ('Train set: ' + repr(len(data_train)))
     print ('Test Set: ' + repr(len(data_test)))
 
     #generate predictions
+
     predictions=[]
     k = 3
     for x in range(len(data_test)):
