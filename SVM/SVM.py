@@ -78,6 +78,12 @@ average = round(average, 4)
 accuracy = [average, min, max] # array of values to graph
 labels = ["Average: "+ str(average), "Min: " + str(float(min)), "Max: " + str(float(max))] # labels for each bar of graph
 
+<<<<<<< HEAD
+clf = svm.SVC()
+clf.fit(data_train, target_train)
+predicted = clf.predict(data_test)
+print(accuracy_score(target_test, predicted))
+=======
 index = np.arange(3) # sets spacing on x axis
 width = 0.5 # bar width
 plt.bar(index, accuracy, width, align = 'center') # creates the graph
@@ -87,3 +93,4 @@ plt.title(str(run) + " Runs") # adds title to graph indicating how many iteratio
 
 plt.show() # displays the graph
 '''
+>>>>>>> remotes/origin/master
