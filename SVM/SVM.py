@@ -7,6 +7,7 @@ from sklearn.preprocessing import Imputer
 from sklearn.metrics import accuracy_score
 from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
+from sklearn.model_selection import cross_val_score
 
 def findMin(accuracy): # finds the smallest value in an array
     min = accuracy[0]
@@ -41,8 +42,13 @@ data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
 
 
+clf = svm.SVC(C = 1, kernel='linear', decision_function_shape='ovo', random_state= 6) # sets up the svm
+results = cross_val_score(clf, data, target, cv = 10)
+print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean()*100, results.std() * 200))
+
+'''
 total = 0 # counter to hold the results of all the runs for calculating an average
-run = 10 # this makes it so that i can adjust the how man times the loop runs with out manually changing what temp is divided by
+run = 100 # this makes it so that i can adjust the how man times the loop runs with out manually changing what temp is divided by
 
 #this for loop is used to get an average accuracy
 #We do this because our results change based on how the data is split
@@ -50,12 +56,13 @@ runResults = np.zeros(shape = (run,1)) # create an array of zeros
 temp = 0 # holds accuracy score
 for x in range(0, run):
     data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3) # 70:30 train:test data split
-    clf = svm.SVC(C = 1, kernel='linear', decision_function_shape='ovo', random_state= 6) # sets up the svm
+    clf = svm.SVC(C = 1, kernel='rbf', decision_function_shape='ovo') # sets up the svm
     clf.fit(data_train, target_train) # trains svm
     predicted = clf.predict(data_test) # testing the svm
     temp = accuracy_score(target_test, predicted) *100 # our accuracy value
     runResults[x] = temp # accuracy value added to an array
     total += temp # accuracy value added to total
+    print("Iteration" + str(x))
 
 
 average = total/run # calculates  the average
@@ -79,3 +86,4 @@ plt.ylabel('% Accuracy') #label for y axis
 plt.title(str(run) + " Runs") # adds title to graph indicating how many iterations of the loop were run
 
 plt.show() # displays the graph
+'''
