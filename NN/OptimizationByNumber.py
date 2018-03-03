@@ -51,7 +51,7 @@ def aveaccuracy(_data, _target, _hlayers):
 
 
 # 16, 14, 11 is the best so far, 6,3 was the best for 2 layers
-hlayers = [(10, 7, 5)]
+hlayers = [43, 73, (10, 7, 5), 59, 76]
 
 # temporary values to be replaced
 ideal = [0, 0, 0]
@@ -67,6 +67,6 @@ for x in hlayers:
         print("The predictions were " + str(temp[0]) + "% accurate on average for " + str(x))
         print("The standard deviation was " + str(temp[1] * 100) + "%")
 
-#  print the best average and its F1 score
+# print the best average and its F1 score
 print(str(ideal) + " gives " + str(maxi[0]) + "% accuracy")
 print("The standard deviation was " + str(maxi[1] * 100) + "%")
