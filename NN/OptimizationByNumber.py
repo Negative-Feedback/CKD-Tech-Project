@@ -13,9 +13,6 @@ from sklearn.metrics.scorer import make_scorer
 from imblearn.over_sampling import SMOTE
 import metrics
 
-import sys
-sys.path.insert(0, '/NN')
-import OptimizationMethods
 
 # classification threshold
 
@@ -41,30 +38,6 @@ imp.fit(data)
 data = imp.fit_transform(data)
 
 data, target = SMOTE().fit_sample(data, target)
-
-
-# Function that creates the neural network 100 times and takes the average of its F1 score
-def aveaccuracy(_data, _target, _hlayers):
-    toreturn = 0.
-    accuracy = np.zeros(100)
-    for i in range(100):
-        # split the data randomly
-        data_train, data_test, target_train, target_test = train_test_split(_data, _target, test_size=0.3)
-
-        # create the neural network and fit it to the data
-        clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=_hlayers, random_state=1)
-        clf.fit(data_train, target_train)
-
-        # have the neural network predict the results and find its accuracy
-        prediction = clf.predict(data_test)
-        accuracy[i] = f1_score(target_test, prediction, pos_label='1')
-        toreturn += accuracy[i]
-
-        # return the accuracy and its standard deviation
-    return [toreturn, np.std(accuracy)]
-
-
-
 
 # 16, 14, 11 is the best so far, 6,3 was the best for 2 layers
 hlayers = [43, 73, (10, 7, 5), 59, 76]

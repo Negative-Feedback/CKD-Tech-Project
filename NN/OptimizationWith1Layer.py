@@ -31,29 +31,16 @@ data = imp.fit_transform(data)
 
 data, target = SMOTE().fit_sample(data, target)
 
-
-# Function that creates the neural network 100 times and takes the average of its F1 score
-def aveaccuracy(data, target, h1):
-    toreturn = 0.
-    for n in range(100):
-        data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3)
-        clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=h1, random_state=1)
-        clf.fit(data_train, target_train)
-        prediction = clf.predict(data_test)
-        accuracy = f1_score(target_test, prediction, pos_label='1')
-        toreturn += accuracy
-    return toreturn
-
-
 # default values
 ideal = [0]
 maxi = 0
 
 # check a lot of hidden layer configurations for sets with high accuracy
-print("hlayers/tp/tn/fp/fn/f1/precision/sensitivity/specificity")
+print("hlayers/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
 for x in range(1, 100):
         temp = metrics.crossValidatedScores(data, target,
-                                        MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1))
+                                        MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1),
+                                            cv=2)
         metrics.printAverages(x, temp)
         '''
         if np.average(temp['test_f1']) > maxi:

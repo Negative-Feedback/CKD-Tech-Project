@@ -9,13 +9,9 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_score
 from sklearn.metrics.scorer import make_scorer
 from imblearn.over_sampling import SMOTE
-
-def tp(y_true, y_pred): return confusion_matrix(y_true, y_pred)[1, 1]
-def tn(y_true, y_pred): return confusion_matrix(y_true, y_pred)[0, 0]
-def fp(y_true, y_pred): return confusion_matrix(y_true, y_pred)[1, 0]
-def fn(y_true, y_pred): return confusion_matrix(y_true, y_pred)[0, 1]
-def specificity(y_true, y_pred):
-    return tn(y_true, y_pred) / (tn(y_true, y_pred) + fp(y_true, y_pred))
+import metrics
+import warnings
+warnings.filterwarnings("ignore")
 
 # open the arff file
 dataset = arff.load(open('ckd.arff'))
@@ -54,31 +50,22 @@ def aveaccuracy(data, target, h1, h2):
     toreturn *= 2
     return toreturn
 
-def crossValidatedScores(data, target, hlayers):
-    data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3)
-    clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=hlayers, random_state=1)
-    scoring = {'tp': make_scorer(tp), 'tn': make_scorer(tp),
-               'fp': make_scorer(fp), 'fn': make_scorer(fn),
-               'f1': 'f1', 'prec': 'precision', 'sensitivity': 'recall',
-               'specificity': make_scorer(specificity)}
-    results = cross_validate(clf.fit(data_train, target_train), data_test, target_test, scoring=scoring)
-    return results
-
-
-
 # default values
 ideal = [0, 0]
 maxi = 0
 
 # check a lot of hidden layer configurations for sets with high accuracy
-for x in range(2, 50):
+for x in range(2, 75):
     for y in range(1, x):
-        temp = crossValidatedScores(data, target, (x, y))
-        if temp['f1'] > maxi:
-            maxi = temp
+        temp = metrics.crossValidatedScores(data, target,
+                                        MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(x, y), random_state=1),
+                                        cv=2)
+        metrics.printAverages((x, y), temp)
+        if np.average(temp['test_f1']) > maxi:
+            maxi = np.average(temp['test_f1'])
             ideal = [x, y]
-        if temp > 84:
-            print("The predictions were " + str(temp) + "% accurate on average for " + str([x, y]))
+        #if np.average(temp['test_f1']) > 0.75:
+           #print("The predictions were " + str(np.average(temp['test_f1']) * 100) + "% accurate on average for " + str(x))
 
 # print the highest accuracy one
 print(str(ideal) + " gives " + str(maxi) + "% accuracy")
