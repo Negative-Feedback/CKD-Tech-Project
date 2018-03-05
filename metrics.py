@@ -47,24 +47,14 @@ def printAverages(x, a):
           + "%/" + str(np.average(a['test_specificity']) * 100)
           + "%/" + str(np.average(a['test_accuracy']) * 100) + "%")
 
-'''
+
 # Function that creates the neural network 100 times and takes the average of its F1 score
-def aveaccuracy(_data, _target, _hlayers):
-    toreturn = 0.
-    accuracy = np.zeros(100)
-    for i in range(100):
-        # split the data randomly
-        data_train, data_test, target_train, target_test = train_test_split(_data, _target, test_size=0.3)
+def aveaccuracy(_data, _target, _clf, iterations=50, cv=2):
+    toreturn = crossValidatedScores(_data, _target, _clf, cv=cv)
 
-        # create the neural network and fit it to the data
-        clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=_hlayers, random_state=1)
-        clf.fit(data_train, target_train)
+    for i in range(iterations - 1):
+        temp = crossValidatedScores(_data, _target, _clf, cv=cv)
+        toreturn = {k: temp.get(k, 0) + toreturn.get(k, 0) for k in set(temp)}
 
-        # have the neural network predict the results and find its accuracy
-        prediction = clf.predict(data_test)
-        accuracy[i] = f1_score(target_test, prediction, pos_label='1')
-        toreturn += accuracy[i]
-
-        # return the accuracy and its standard deviation
-    return [toreturn, np.std(accuracy)]
-    '''
+    toReturn = {k: v / iterations for k, v in toreturn.items()}
+    return toReturn

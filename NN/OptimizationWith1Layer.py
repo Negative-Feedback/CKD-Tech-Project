@@ -38,17 +38,25 @@ maxi = 0
 # check a lot of hidden layer configurations for sets with high accuracy
 print("hlayers/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
 for x in range(1, 100):
+    '''
         temp = metrics.crossValidatedScores(data, target,
-                                        MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1),
+                                            MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1),
                                             cv=2)
-        metrics.printAverages(x, temp)
-        '''
-        if np.average(temp['test_f1']) > maxi:
+    '''
+    temp = metrics.aveaccuracy(data, target,
+                               MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1),
+                               iterations=20)
+    metrics.printAverages(x, temp)
+    if np.average(temp['test_f1']) > maxi:
+        maxi = np.average(temp['test_f1'])
+        ideal = x
+    '''
+    if np.average(temp['test_f1']) > maxi:
             maxi = np.average(temp['test_f1'])
             ideal = [x]
-        if np.average(temp['test_f1']) > 0.75:
-            print("The predictions were " + str(np.average(temp['test_f1']) * 100) + "% accurate on average for " + str(x))
-            '''
+    if np.average(temp['test_f1']) > 0.75:
+        print("The predictions were " + str(np.average(temp['test_f1']) * 100) + "% accurate on average for " + str(x))
+    '''
 
 # print the highest accuracy one
 print(str(ideal) + " gives " + str(maxi) + "% accuracy")
