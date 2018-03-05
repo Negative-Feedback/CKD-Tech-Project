@@ -33,7 +33,7 @@ y = iris.target
 X_train, X_test, y_train, y_test = train_test_split(X,y, test_size =0.4, random_state = 4)
 
 # try K=1 through K=25 and record testing accuracy
-k_range = range(1,25)
+k_range = range(1,26)
 scores = []
 for k in k_range:
     knn = KNeighborsClassifier(n_neighbors=k)
@@ -41,10 +41,6 @@ for k in k_range:
     y_pred = knn.predict(X_test)
     scores.append(metrics.accuracy_score(y_test, y_pred))
 
-for i in k_range:
-    print(scores[i])
-
-plt.clf()
 plt.plot(k_range, scores)
 plt.xlabel('Value of K for KNN')
 plt.ylabel('Testing Accuracy')
