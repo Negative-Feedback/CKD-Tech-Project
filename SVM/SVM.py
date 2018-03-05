@@ -2,7 +2,7 @@
 import arff
 import numpy as np
 from sklearn import svm
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import Imputer
 from sklearn.metrics import accuracy_score
 from imblearn.over_sampling import SMOTE
@@ -42,9 +42,15 @@ data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
 
 
-clf = svm.SVC(C = 1, kernel='linear', decision_function_shape='ovo', random_state= 6) # sets up the svm
-results = cross_val_score(clf, data, target, cv = 10)
-print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean()*100, results.std() * 200))
+#clf = svm.SVC(C = 1, kernel='linear', decision_function_shape='ovo') # sets up the svm
+parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
+svc = svm.SVC()
+clf = GridSearchCV(svc, parameters)
+print("test")
+clf.fit(data, target)
+print(sorted(clf.cv_results_.keys()))
+#results = cross_val_score(clf, data, target, cv = 10)
+#print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean()*100, results.std() * 200))
 
 '''
 total = 0 # counter to hold the results of all the runs for calculating an average
@@ -78,12 +84,11 @@ average = round(average, 4)
 accuracy = [average, min, max] # array of values to graph
 labels = ["Average: "+ str(average), "Min: " + str(float(min)), "Max: " + str(float(max))] # labels for each bar of graph
 
-<<<<<<< HEAD
+
 clf = svm.SVC()
 clf.fit(data_train, target_train)
 predicted = clf.predict(data_test)
 print(accuracy_score(target_test, predicted))
-=======
 index = np.arange(3) # sets spacing on x axis
 width = 0.5 # bar width
 plt.bar(index, accuracy, width, align = 'center') # creates the graph
@@ -93,4 +98,3 @@ plt.title(str(run) + " Runs") # adds title to graph indicating how many iteratio
 
 plt.show() # displays the graph
 '''
->>>>>>> remotes/origin/master
