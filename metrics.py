@@ -49,7 +49,7 @@ def printAverages(x, a):
 
 
 # Function that creates the neural network 100 times and takes the average of its F1 score
-def aveaccuracy(_data, _target, _clf, iterations=50, cv=2):
+def repeatedCrossValidatedScores(_data, _target, _clf, iterations=50, cv=2):
     toreturn = crossValidatedScores(_data, _target, _clf, cv=cv)
 
     for i in range(iterations - 1):

@@ -1,13 +1,9 @@
 import arff
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_validate
 from sklearn.preprocessing import Imputer
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import f1_score
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import precision_score
-from sklearn.metrics.scorer import make_scorer
 from imblearn.over_sampling import SMOTE
 import metrics
 import warnings
