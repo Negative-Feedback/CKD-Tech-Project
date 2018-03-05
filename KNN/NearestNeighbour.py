@@ -1,10 +1,9 @@
 import arff
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
-from sklearn.metrics import accuracy_score
+from sklearn import metrics
 #from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
@@ -27,36 +26,26 @@ from sklearn.datasets import load_iris
 
 iris = load_iris()
 type(iris)
-
 # store feature matrix in "X"
 X = iris.data
-
 # store response vector in "y"
 y = iris.target
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size =0.4, random_state = 4)
 
-#instantiating estimator object
-knn = KNeighborsClassifier(n_neighbors=1)
+# try K=1 through K=25 and record testing accuracy
+k_range = range(1,25)
+scores = []
+for k in k_range:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    scores.append(metrics.accuracy_score(y_test, y_pred))
 
-#fit the model with data
-knn.fit(X,y)
+for i in k_range:
+    print(scores[i])
 
-#predict the response for new observations
-#returns a NumPy array of predictions
-X_New = [[3,5,4,2], [5,4,3,2]]
-print(knn.predict(X_New))
-
-#instantiate the model (using the value K=5)
-knn = KNeighborsClassifier(n_neighbors=5)
-
-# fit the model with data
-knn.fit(X,y)
-
-#predict the response for new observations
-print(knn.predict(X_New))
-
-logreg = LogisticRegression()
-
-#fit the model with data
-logreg.fit(X,y)
-
-print(logreg.predict(X_New))
+plt.clf()
+plt.plot(k_range, scores)
+plt.xlabel('Value of K for KNN')
+plt.ylabel('Testing Accuracy')
+plt.show()
