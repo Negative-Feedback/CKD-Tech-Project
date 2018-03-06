@@ -41,9 +41,9 @@ for x in range(1, 100):
                                             MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1),
                                             cv=2)
     '''
-    temp = metrics.aveaccuracy(data, target,
-                               MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1),
-                               iterations=20)
+    temp = metrics.repeatedCrossValidatedScores(data, target,
+                                                MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x,
+                                                              random_state=1, activation='logistic'), iterations=20)
     metrics.printAverages(x, temp)
     if np.average(temp['test_f1']) > maxi:
         maxi = np.average(temp['test_f1'])

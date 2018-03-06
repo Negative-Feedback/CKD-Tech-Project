@@ -53,9 +53,9 @@ maxi = 0
 # check a lot of hidden layer configurations for sets with high accuracy
 for x in range(2, 75):
     for y in range(1, x):
-        temp = metrics.crossValidatedScores(data, target,
+        temp = metrics.repeatedCrossValidatedScores(data, target,
                                         MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(x, y), random_state=1),
-                                        cv=2)
+                                        cv=10,  iterations=10)
         metrics.printAverages((x, y), temp)
         if np.average(temp['test_f1']) > maxi:
             maxi = np.average(temp['test_f1'])

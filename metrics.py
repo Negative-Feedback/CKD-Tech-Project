@@ -3,9 +3,11 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
 from sklearn.metrics.scorer import make_scorer
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
+from sklearn.model_selection import GridSearchCV
 import numpy as np
 
 def tp(y_true, y_pred): return confusion_matrix(y_true, y_pred)[1, 1]
@@ -58,3 +60,36 @@ def repeatedCrossValidatedScores(_data, _target, _clf, iterations=50, cv=2):
 
     toReturn = {k: v / iterations for k, v in toreturn.items()}
     return toReturn
+
+
+def OptimizeClassifier(data, target, clf, grid, scores={'f1': make_scorer(f1)}, cv=10, refit='f1'):
+    data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3)
+    for score in scores:
+        print("# Tuning hyper-parameters for %s" % score)
+        print()
+
+        clf = GridSearchCV(clf, grid, cv=cv,
+                           scoring=scores, refit=refit)
+        clf.fit(data_train, target_train)
+
+        print("Best parameters set found on development set:")
+        print()
+        print(clf.best_params_)
+        print()
+        print("Grid scores on development set:")
+        print()
+        means = clf.cv_results_['mean_test_f1']
+        stds = clf.cv_results_['std_test_f1']
+        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r"
+                  % (mean, std * 2, params))
+        print()
+
+        print("Detailed classification report:")
+        print()
+        print("The model is trained on the full development set.")
+        print("The scores are computed on the full evaluation set.")
+        print()
+        y_true, y_pred = target_test, clf.predict(data_test)
+        print(classification_report(y_true, y_pred))
+        print()
