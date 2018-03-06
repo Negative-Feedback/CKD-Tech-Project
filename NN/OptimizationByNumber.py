@@ -1,17 +1,11 @@
 import arff
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_validate
 from sklearn.preprocessing import Imputer
 from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import f1_score
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
-from sklearn.metrics import roc_curve
-from sklearn.metrics.scorer import make_scorer
 from imblearn.over_sampling import SMOTE
 import metrics
+import warnings
+warnings.filterwarnings("ignore")
 
 
 # classification threshold
@@ -40,19 +34,30 @@ data = imp.fit_transform(data)
 data, target = SMOTE().fit_sample(data, target)
 
 # 16, 14, 11 is the best so far, 6,3 was the best for 2 layers
-hlayers = [43, 73, (10, 7, 5), 59, 76]
+hlayers = [43, 73, (10, 7, 5), 59, 76, (23, 21), (25, 16), (27, 5), (29, 27),
+           (32, 19), (43, 10), (56, 41), (52, 15), (62, 40), (68, 13), (71, 50),
+           (73, 14), (30, 17, 9)]
 
 # temporary values to be replaced
 ideal = [0, 0, 0]
-maxi = {'test_f1': 0}
+maxi = 0
 # graph = np.zeros(hlayers.count)
 
 # find the average F1 score and its standard deviation for all the layer sizes
 print("hlayers/tp/tn/fp/fn/f1/precision/sensitivity/specificity")
 for x in hlayers:
+    '''
     temp = metrics.crossValidatedScores(data, target,
                                         MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1))
+                                        '''
+    temp = metrics.aveaccuracy(data, target,
+                               MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=x, random_state=1),
+                               iterations=20)
     metrics.printAverages(x, temp)
+
+    if np.average(temp['test_f1']) > maxi:
+        maxi = np.average(temp['test_f1'])
+        ideal = x
     '''
     if temp['test_f1'] > maxi['test_f1']:
         maxi = temp
@@ -63,5 +68,5 @@ for x in hlayers:
     '''
 
 # print the best average and its F1 score
-print(str(ideal) + " gives " + str(maxi['test_f1']) + "% accuracy")
+print(str(ideal) + " gives " + str(maxi *100) + "% accuracy")
 #print("The standard deviation was " + str(maxi[1] * 100) + "%")
