@@ -24,8 +24,7 @@ data, target = SMOTE().fit_sample(data, target) # oversamples the minority class
 
 #instantiating estimator object
 dt = DecisionTreeClassifier()
-scores = cross_val_score(dt, data, target, cv=10, scoring='accuracy')
-dt.fit(data,target)
-print(scores)
-print(scores.mean())
-print(metrics.accuracy_score)
+scores = metrics.repeatedCrossValidatedScores(data, target, dt, cv=10, iterations=10)
+# rf.fit
+print("title/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
+metrics.printAverages("Decision Tree", scores)

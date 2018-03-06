@@ -7,6 +7,8 @@ from sklearn.metrics.scorer import make_scorer
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
 import numpy as np
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def tp(y_true, y_pred): return confusion_matrix(y_true, y_pred)[1, 1]
 def tn(y_true, y_pred): return confusion_matrix(y_true, y_pred)[0, 0]

@@ -36,7 +36,7 @@ param_grid = dict(n_neighbors=k_range)
 print (param_grid)
 grid = GridSearchCV(knn, param_grid, cv=10, scoring='accuracy')
 grid.fit(data, target)
-grid_mean_scores_ = [result.mean_validation_score for result in grid.cv_results_]
+grid_mean_scores_ = {result.mean_validation_score for result in grid.cv_results_}
 
 
 plt.plot(k_range, grid_mean_scores_)
@@ -48,7 +48,7 @@ k_range = range (1,100)
 k_scores = []
 for k in k_range:
     knn = KNeighborsClassifier(n_neighbors = k)
-    scores = metrics.crossValidatedScores(data, target, knn, cv=3)
+    scores = metrics.repeatedCrossValidatedScores(data, target, knn, cv=10, iterations=10)
     k_scores.append(scores['test_accuracy'].mean())
 
 plt.plot(k_range, k_scores)
