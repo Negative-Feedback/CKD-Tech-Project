@@ -1,6 +1,6 @@
 import arff
 import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
 from sklearn import metrics
@@ -23,35 +23,9 @@ data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
 
 #instantiating estimator object
-knn = KNeighborsClassifier(n_neighbors = 5)
-scores = cross_val_score(knn, data, target, cv=10, scoring='accuracy')
-
-knn.fit(data,target)
+dt = DecisionTreeClassifier()
+scores = cross_val_score(dt, data, target, cv=10, scoring='accuracy')
+dt.fit(data,target)
 print(scores)
 print(scores.mean())
 print(metrics.accuracy_score)
-
-k_range = range(1,51)
-param_grid = dict(n_neighbors=k_range)
-print (param_grid)
-grid = GridSearchCV(knn, param_grid, cv=10, scoring='accuracy')
-grid.fit(data, target)
-grid_mean_scores_ = [result.mean_validation_score for result in grid.cv_results_]
-
-
-plt.plot(k_range, grid_mean_scores_)
-plt.xlabel('Value of K for KNN')
-plt.ylabel('Cross-Validated Accuracy')
-
-
-k_range = range (1,100)
-k_scores = []
-for k in k_range:
-    knn = KNeighborsClassifier(n_neighbors = k)
-    scores = metrics.crossValidatedScores(data, target, knn, cv=3)
-    k_scores.append(scores['test_accuracy'].mean())
-
-plt.plot(k_range, k_scores)
-plt.xlabel('Value of K')
-plt.ylabel('Cross-Validation Accuracy')
-plt.show()
