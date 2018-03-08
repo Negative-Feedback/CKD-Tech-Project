@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 import metrics
+import graphviz
+from sklearn.tree import export_graphviz
 
 dataset = arff.load(open('C:/Users/gener/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff')) # loads the dataset
 #change the filepath to where yours is
@@ -28,3 +30,5 @@ scores = metrics.repeatedCrossValidatedScores(data, target, dt, cv=10, iteration
 # rf.fit
 print("title/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
 metrics.printAverages("Decision Tree", scores)
+
+export_graphviz(dt, out_file='ckdtree.dot', class_names=['malignant','benign'], feature_names=dataset.feature_names, impurity=False, filled=True)
