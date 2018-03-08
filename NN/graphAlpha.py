@@ -34,20 +34,20 @@ data = imp.fit_transform(data)
 data, target = SMOTE().fit_sample(data, target)
 
 # alpha_range = [float(i) / 100000 for i in range(1, 1001)]
-alpha_range = [0.1, 0.01, 0.001, 0.0001, 1e-5]
+alpha_range = [0.0005, 0.001, 0.005, 0.01]
 alpha_accuracy = []
 alpha_sensitivity = []
 alpha_specificity = []
 for x in alpha_range:
     temp = metrics.repeatedCrossValidatedScores(data, target,
                                MLPClassifier(solver='lbfgs', alpha=x, hidden_layer_sizes=43, random_state=1),
-                               iterations=50, cv=10)
+                               iterations=1000, cv=10)
     metrics.printAverages('%.5f' % x, temp)
     alpha_accuracy.append(np.average(temp['test_accuracy']))
     # alpha_sensitivity.append(np.average(temp['test_sensitivity']))
     # alpha_specificity.append(np.average(temp['test_specificity']))
 
-plt.plot(range(1, 6), alpha_accuracy)
+plt.plot(range(1, 5), alpha_accuracy)
 plt.xlabel('Value of Alpha')
 plt.ylabel('Cross-Validation Accuracy')
 plt.grid = True
