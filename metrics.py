@@ -8,8 +8,13 @@ from sklearn.metrics.scorer import make_scorer
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import GridSearchCV
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.preprocessing import Imputer
+from imblearn.over_sampling import SMOTE
 import numpy as np
 import warnings
+import arff
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def tp(y_true, y_pred): return confusion_matrix(y_true, y_pred)[1, 1]
@@ -95,3 +100,38 @@ def OptimizeClassifier(data, target, clf, grid, scores={'f1': make_scorer(f1)}, 
         y_true, y_pred = target_test, clf.predict(data_test)
         print(classification_report(y_true, y_pred))
         print()
+
+def UnivariateSelection(data, target, k=12):
+    test = SelectKBest(score_func=chi2, k=k)
+    fit = test.fit(data, target)
+    # summarize scores
+    np.set_printoptions(precision=3)
+    print(fit.scores_)
+    features = fit.transform(data)
+    # summarize selected features
+    print(features[0:5, :])
+    return fit.scores_
+
+def preprocess():
+    # open the arff file
+    dataset = arff.load(open('chronic_kidney_disease.arff'))
+
+    # pulls the data into a numpy array
+    raw_data = np.array(dataset['data'])
+
+    # takes everything except the last column
+    data = raw_data[:, :-1]
+
+    # just the last column
+    target = raw_data[:, -1]
+
+    # fixes missing data by taking values from other rows and taking the average
+    imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
+
+    # this function takes the average of every column excluding the unknown values
+    imp.fit(data)
+
+    # inserts the average into the missing spots
+    data = imp.fit_transform(data)
+
+    return SMOTE().fit_sample(data, target)

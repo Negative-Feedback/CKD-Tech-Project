@@ -1,0 +1,53 @@
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+import arff
+import numpy as np
+from sklearn.preprocessing import Imputer
+from sklearn.neural_network import MLPClassifier
+from imblearn.over_sampling import SMOTE
+
+import metrics
+import warnings
+warnings.filterwarnings("ignore")
+
+# open the arff file
+dataset = arff.load(open('ckd.arff'))
+
+# pulls the data into a numpy array
+raw_data = np.array(dataset['data'])
+
+# takes everything except the last column
+data = raw_data[:, :-1]
+
+# just the last column
+target = raw_data[:, -1]
+
+# fixes missing data by taking values from other rows and taking the average
+imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
+
+# this function takes the average of every column excluding the unknown values
+imp.fit(data)
+
+# inserts the average into the missing spots
+data = imp.fit_transform(data)
+
+data, target = SMOTE().fit_sample(data, target)
+
+neuron_range = range(1, 101)
+neuron_accuracy = []
+neuron_sensitivity = []
+neuron_specificity = []
+for x in neuron_range:
+    temp = metrics.repeatedCrossValidatedScores(data, target,
+                               MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=x, random_state=1),
+                               iterations=100, cv=10)
+    metrics.printAverages(x, temp)
+    neuron_accuracy.append(np.average(temp['test_accuracy']))
+    # neuron_sensitivity.append(np.average(temp['test_sensitivity']))
+    # neuron_specificity.append(np.average(temp['test_specificity']))
+
+plt.plot(neuron_range, neuron_accuracy)
+plt.xlabel('Number of Neurons')
+plt.ylabel('Cross-Validation Accuracy')
+plt.grid = True
+plt.show()
