@@ -89,7 +89,7 @@ def OptimizeClassifier(data, target, clf, grid, scores={'f1': make_scorer(f1)}, 
         means = clf.cv_results_['mean_test_f1']
         stds = clf.cv_results_['std_test_f1']
         for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-            print("%0.3f (+/-%0.03f) for %r"
+            print("%0.5f (+/-%0.03f) for %r"
                   % (mean, std * 2, params))
         print()
 

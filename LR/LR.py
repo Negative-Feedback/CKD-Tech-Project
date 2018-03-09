@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
+import metrics
 
 dataset = arff.load(open('C:/Users/Tyler/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff')) # loads the dataset
 #change the filepath to where yours is
@@ -17,11 +18,9 @@ imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #fixes missing data
 imp.fit(data) #iirc this fucntion takes the average
 data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target)
-#x                           y
-data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3) #breaks the dataset into test and training data
 
-model = LogisticRegression() #Creates a copy of te function LogisticRegression and names it as model
+model = LogisticRegression(C=1000) #Creates a copy of te function LogisticRegression and names it as model
 
-results = cross_val_score(model, data, target, cv = 10)#Gives avaerage accuracy
-print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean()*100, results.std() * 200))#prints results
+results = metrics.repeatedCrossValidatedScores(data, target, model, cv =10, iterations=50)#Gives avaerage accuracy
+print("Accuracy: %0.2f (+/- %0.2f)" % (results['test_accuracy'].mean()*100, results['test_accuracy'].std() * 200))#prints results
 
