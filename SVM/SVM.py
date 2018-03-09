@@ -2,11 +2,16 @@
 import arff
 import numpy as np
 from sklearn import svm
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
 from sklearn.metrics import accuracy_score
 from imblearn.over_sampling import SMOTE
+import metrics
 import matplotlib.pyplot as plt
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import brier_score_loss, precision_score, recall_score, f1_score
+from sklearn.calibration import CalibratedClassifierCV, calibration_curve
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 
 def findMin(accuracy): # finds the smallest value in an array
@@ -40,61 +45,90 @@ imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #fixes missing data
 imp.fit(data) #iirc this fucntion takes the average
 data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
+data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3)
 
 
-#clf = svm.SVC(C = 1, kernel='linear', decision_function_shape='ovo') # sets up the svm
-parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
-svc = svm.SVC()
-clf = GridSearchCV(svc, parameters)
-print("test")
-clf.fit(data, target)
-print(sorted(clf.cv_results_.keys()))
-#results = cross_val_score(clf, data, target, cv = 10)
-#print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean()*100, results.std() * 200))
+def plot_calibration_curve(est, name, fig_index):
+    
 
-'''
-total = 0 # counter to hold the results of all the runs for calculating an average
-run = 100 # this makes it so that i can adjust the how man times the loop runs with out manually changing what temp is divided by
+    """Plot calibration curve for est w/o and with calibration. """
+    # Calibrated with isotonic calibration
+    isotonic = CalibratedClassifierCV(est, cv=2, method='isotonic')
 
-#this for loop is used to get an average accuracy
-#We do this because our results change based on how the data is split
-runResults = np.zeros(shape = (run,1)) # create an array of zeros
-temp = 0 # holds accuracy score
-for x in range(0, run):
-    data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3) # 70:30 train:test data split
-    clf = svm.SVC(C = 1, kernel='rbf', decision_function_shape='ovo') # sets up the svm
-    clf.fit(data_train, target_train) # trains svm
-    predicted = clf.predict(data_test) # testing the svm
-    temp = accuracy_score(target_test, predicted) *100 # our accuracy value
-    runResults[x] = temp # accuracy value added to an array
-    total += temp # accuracy value added to total
-    print("Iteration" + str(x))
+    # Calibrated with sigmoid calibration
+    sigmoid = CalibratedClassifierCV(est, cv=2, method='sigmoid')
 
+    # Logistic regression with no calibration as baseline
+    lr = LogisticRegression(C=1., solver='lbfgs')
 
-average = total/run # calculates  the average
+    fig = plt.figure(fig_index, figsize=(10, 10))
+    ax1 = plt.subplot2grid((3, 1), (0, 0), rowspan=2)
+    ax2 = plt.subplot2grid((3, 1), (2, 0))
 
-min = findMin(runResults) # finds max accuracy
-max = findMax(runResults) # fins min accuracy
+    ax1.plot([0, 1], [0, 1], "k:", label="Perfectly calibrated")
+    for clf, name in [(lr, 'Logistic'),
+                      (est, name),
+                      (isotonic, name + ' + Isotonic'),
+                      (sigmoid, name + ' + Sigmoid')]:
+        clf.fit(data_train, target_train)
+        y_pred = clf.predict(data_test)
+        if hasattr(clf, "predict_proba"):
+            prob_pos = clf.predict_proba(data_test)[:, 1]
+        else:  # use decision function
+            prob_pos = clf.decision_function(data_test)
+            prob_pos = \
+                (prob_pos - prob_pos.min()) / (prob_pos.max() - prob_pos.min())
 
-# rounds average, min, max to 4 decimal places
-min = np.round(min, 4)
-max = np.round(max, 4)
-average = round(average, 4)
-
-accuracy = [average, min, max] # array of values to graph
-labels = ["Average: "+ str(average), "Min: " + str(float(min)), "Max: " + str(float(max))] # labels for each bar of graph
+        clf_score = brier_score_loss(target_test, prob_pos, pos_label = 0)
+        print("%s:" % name)
+        print("\tBrier: %1.3f" % (clf_score))
+        print("\tPrecision: %1.3f" % precision_score(target_test, y_pred))
+        print("\tRecall: %1.3f" % recall_score(target_test, y_pred))
+        print("\tF1: %1.3f\n" % f1_score(target_test, y_pred))
 
 
+        fraction_of_positives, mean_predicted_value = \
+            calibration_curve(target_test, prob_pos, n_bins=10)
+
+        ax1.plot(mean_predicted_value, fraction_of_positives, "s-",
+                 label="%s (%1.3f)" % (name, clf_score))
+
+        ax2.hist(prob_pos, range=(0, 1), bins=10, label=name,
+                 histtype="step", lw=2)
+
+    ax1.set_ylabel("Fraction of positives")
+    ax1.set_ylim([-0.05, 1.05])
+    ax1.legend(loc="lower right")
+    ax1.set_title('Calibration plots  (reliability curve)')
+
+    ax2.set_xlabel("Mean predicted value")
+    ax2.set_ylabel("Count")
+    ax2.legend(loc="upper center", ncol=2)
+
+    plt.tight_layout()
+
+    # Plot calibration curve for Gaussian Naive Bayes
+    #plot_calibration_curve(GaussianNB(), "Naive Bayes", 1)
+
+    # Plot calibration curve for Linear SVC
+plot_calibration_curve(svm.SVC(), "SVC", 1)
+
+plt.show()
+
+
+'''C = [1, 10, 100, 1000]
+decision_function_shape = ['ovo', 'ovr']
 clf = svm.SVC()
-clf.fit(data_train, target_train)
-predicted = clf.predict(data_test)
-print(accuracy_score(target_test, predicted))
-index = np.arange(3) # sets spacing on x axis
-width = 0.5 # bar width
-plt.bar(index, accuracy, width, align = 'center') # creates the graph
-plt.xticks(index, labels) # adds labels on x axis
-plt.ylabel('% Accuracy') #label for y axis
-plt.title(str(run) + " Runs") # adds title to graph indicating how many iterations of the loop were run
+kernel = ['linear']
 
-plt.show() # displays the graph
-'''
+clf = svm.SVC(C = 1, kernel='linear', decision_function_shape='ovo') # sets up the svm
+
+scores = metrics.repeatedCrossValidatedScores(data, target, clf, cv=10, iterations=10)
+print(scores)
+
+#param_grid = {'C': C, 'decision_function_shape': decision_function_shape, 'kernel' : kernel}
+#metrics.OptimizeClassifier(data, target, clf, param_grid)
+#results = cross_val_score(clf, data, target, cv = 10)
+#print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean()*100, results.std() * 200))'''
+
+
