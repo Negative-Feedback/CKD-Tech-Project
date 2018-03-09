@@ -33,7 +33,7 @@ print("hlayers/tp/tn/fp/fn/f1/precision/sensitivity/specificity")
 for x in hlayers:
     temp = metrics.repeatedCrossValidatedScores(data, target,
                                MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=x, random_state=1),
-                               iterations=1)
+                               iterations=100, cv=10)
     metrics.printAverages(x, temp)
 
     if np.average(temp['test_f1']) > maxi:
@@ -41,5 +41,5 @@ for x in hlayers:
         ideal = x
 
 # print the best average and its F1 score
-print(str(ideal) + " gives " + str(maxi *100) + "% accuracy")
+print(str(ideal) + " gives " + str(maxi * 100) + "% accuracy")
 #print("The standard deviation was " + str(maxi[1] * 100) + "%")

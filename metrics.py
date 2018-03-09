@@ -7,6 +7,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics.scorer import make_scorer
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
+from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
@@ -25,7 +26,7 @@ def specificity(y_true, y_pred):
     if tn(y_true, y_pred) + fp(y_true, y_pred) == 0:
         return 0
     else:
-        return tn(y_true, y_pred) / (tn(y_true, y_pred) + fp(y_true, y_pred))
+        return float(tn(y_true, y_pred)) / float((tn(y_true, y_pred) + fp(y_true, y_pred)))
 def f1(y_true, y_pred):
     return f1_score(y_true, y_pred, pos_label='1')
 def sensitivity(y_true, y_pred):
@@ -61,7 +62,7 @@ def printAverages(x, a):
 def repeatedCrossValidatedScores(_data, _target, _clf, iterations=50, cv=2):
     toreturn = crossValidatedScores(_data, _target, _clf, cv=cv)
 
-    for i in range(iterations - 1):
+    for i in range(0, iterations - 1):
         temp = crossValidatedScores(_data, _target, _clf, cv=cv)
         toreturn = {k: temp.get(k, 0) + toreturn.get(k, 0) for k in set(temp)}
 

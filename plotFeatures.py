@@ -1,41 +1,20 @@
-import arff
-import numpy as np
-from sklearn.preprocessing import Imputer
-from sklearn.neural_network import MLPClassifier
-from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
 import metrics
 import warnings
 warnings.filterwarnings("ignore")
 
-
-# classification threshold
-
-# open the arff file
-dataset = arff.load(open('chronic_kidney_disease.arff'))
-
-# pulls the data into a numpy array
-raw_data = np.array(dataset['data'])
-
-# takes everything except the last column
-data = raw_data[:, :-1]
-
-# just the last column
-target = raw_data[:, -1]
-
-# fixes missing data by taking values from other rows and taking the average
-imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
-
-# this function takes the average of every column excluding the unknown values
-imp.fit(data)
-
-# inserts the average into the missing spots
-data = imp.fit_transform(data)
-
-data, target = SMOTE().fit_sample(data, target)
+data, target = metrics.preprocess()
 
 barHeights = metrics.UnivariateSelection(data, target)
+features = ['age', 'blood pressure',  'specific gravity', 'albumin', 'sugar', 'red blood cells', 'pus cell',
+            'pus cell clumps', 'bacteria', 'blood glucose random', 'blood urea', 'serum creatinine', 'sodium',
+            'potassium', 'hemoglobin', 'packed cell volume', 'white blood cell count', 'red blood cell count',
+            'hypertension', 'diabetes mellitus', 'coronary artery disease', 'appetite', 'pedal edema', 'anemia']
+fig, ax = plt.subplots()
 plt.bar(range(1, 25), barHeights)
-plt.xlabel('Feature')
-plt.ylabel('Importance')
+plt.subplots_adjust(bottom=0.28, left=0.1)
+plt.yticks(size=7)
+plt.xticks(range(1, 25), features, rotation=270, size=7)
+plt.title('Importance of Each Feature', size=16)
+plt.ylabel('Importance (χ2)', size=8)
 plt.show()
