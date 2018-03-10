@@ -10,8 +10,10 @@ from sklearn.model_selection import cross_validate
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import RFE
 from sklearn.feature_selection import chi2
 from sklearn.preprocessing import Imputer
+from sklearn.ensemble import ExtraTreesClassifier
 from imblearn.over_sampling import SMOTE
 import numpy as np
 import warnings
@@ -103,17 +105,18 @@ def OptimizeClassifier(data, target, clf, grid, scores={'f1': make_scorer(f1)}, 
         print()
 
 def UnivariateSelection(data, target, k=12):
-    test = SelectKBest(score_func=chi2, k=k)
-    fit = test.fit(data, target)
+    test = ExtraTreesClassifier()
+    test.fit(data, target)
+    print(test.feature_importances_)
     # summarize scores
-    np.set_printoptions(precision=3)
-    print(fit.scores_)
-    features = fit.transform(data)
+    # np.set_printoptions(precision=3)
+    # print(fit.scores_)
+    # features = fit.transform(data)
     # summarize selected features
-    print(features[0:5, :])
-    return fit.scores_
+    # print(features[0:5, :])
+    return test.feature_importances_
 
-def preprocess():
+def preprocess(k=24):
     # open the arff file
     dataset = arff.load(open('chronic_kidney_disease.arff'))
 
@@ -135,4 +138,16 @@ def preprocess():
     # inserts the average into the missing spots
     data = imp.fit_transform(data)
 
-    return SMOTE().fit_sample(data, target)
+    fs = ExtraTreesClassifier()
+    fs.fit(data, target)
+
+    sortedScores = np.sort(fs.feature_importances_)
+    mask = np.ones(len(sortedScores), dtype=bool)
+    for x in range(len(sortedScores)):
+        if fs.feature_importances_[x] < sortedScores[24-k]:
+            mask[x] = False
+    for x in range(23, -1, -1):
+        if mask[x] == False:
+            data = np.delete(data, x, 1)
+    data, target = SMOTE().fit_sample(data, target)
+    return data, target

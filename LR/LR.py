@@ -21,6 +21,6 @@ data, target = SMOTE().fit_sample(data, target)
 
 model = LogisticRegression(C=1000) #Creates a copy of te function LogisticRegression and names it as model
 
-results = metrics.repeatedCrossValidatedScores(data, target, model, cv =10, iterations=50)#Gives avaerage accuracy
+results = metrics.repeatedCrossValidatedScores(data, target, model, cv=10, iterations=50)#Gives avaerage accuracy
 print("Accuracy: %0.2f (+/- %0.2f)" % (results['test_accuracy'].mean()*100, results['test_accuracy'].std() * 200))#prints results
 
