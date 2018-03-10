@@ -7,7 +7,7 @@ warnings.filterwarnings("ignore")
 data, target = metrics.preprocess()
 
 # 16, 14, 11 is the best so far, 6,3 was the best for 2 layers
-hlayers = [43, 73, (54, 38), (35, 26), (30, 11), (30, 17, 9), (63, 10)]
+hlayers = [43, 73, 321, (54, 38), (35, 26), (30, 11), (30, 17, 9), (63, 10)]
 
 param_grid = [
     {'hidden_layer_sizes': hlayers, 'alpha': [0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]}]

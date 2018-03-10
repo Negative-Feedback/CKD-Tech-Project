@@ -19,18 +19,8 @@ imp.fit(data) #iirc this fucntion takes the average
 data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target)
 
+model = LogisticRegression(C=1000) #Creates a copy of te function LogisticRegression and names it as model
 
-#param_grid = {'C': [0.001, 0.01, 0.1, 1, 10, 100, 1000] }
-#metrics.OptimizeClassifier(data, target, LogisticRegression(), param_grid)
-
-
-for x in [1,2,3,4,5,6,7,8,9,10]:
-    temp = metrics.repeatedCrossValidatedScores(data, target, LogisticRegression(C=x), cv=10, iterations=50)  # Gives avaerage accuracy
-    metrics.printAverages(x, temp)
-
-
-#model = LogisticRegression() #Creates a copy of te function LogisticRegression and names it as model
-'''
-results = metrics.repeatedCrossValidatedScores(data, target, model, cv =10, iterations=50)#Gives avaerage accuracy
+results = metrics.repeatedCrossValidatedScores(data, target, model, cv=10, iterations=50)#Gives avaerage accuracy
 print("Accuracy: %0.2f (+/- %0.2f)" % (results['test_accuracy'].mean()*100, results['test_accuracy'].std() * 200))#prints results
-'''
+

@@ -25,9 +25,9 @@ neuron_specificity = []
 for x in neuron_range:
     temp = metrics.repeatedCrossValidatedScores(data, target,
                                MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=x, random_state=1),
-                               iterations=100, cv=10)
+                               iterations=50, cv=10)
     metrics.printAverages(x, temp)
-    #neuron_accuracy.append(np.average(temp['test_accuracy']))
+    # neuron_accuracy.append(np.average(temp['test_accuracy']))
     if (np.average(temp['test_sensitivity']) > 0.5) & (np.average(temp['test_specificity']) > 0.5):
         neuron_sensitivity.append(np.average(temp['test_sensitivity']))
         neuron_specificity.append(np.average(temp['test_specificity']))
