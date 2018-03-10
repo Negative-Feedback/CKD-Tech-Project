@@ -7,11 +7,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics.scorer import make_scorer
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
-from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import RFE
-from sklearn.feature_selection import chi2
 from sklearn.preprocessing import Imputer
 from sklearn.ensemble import ExtraTreesClassifier
 from imblearn.over_sampling import SMOTE
@@ -147,7 +143,7 @@ def preprocess(k=24):
         if fs.feature_importances_[x] < sortedScores[24-k]:
             mask[x] = False
     for x in range(23, -1, -1):
-        if mask[x] == False:
+        if not mask[x]:
             data = np.delete(data, x, 1)
     data, target = SMOTE().fit_sample(data, target)
     return data, target
