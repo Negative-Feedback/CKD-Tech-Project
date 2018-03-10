@@ -6,7 +6,7 @@ def sel():
 
 root = Tk()
 
-root.geometry("700x400")
+root.geometry("700x400")#sets gui size
 root.resizable(0, 0)
 root.title("Chronic Kidney Disease - Prototype")
 var = IntVar()
