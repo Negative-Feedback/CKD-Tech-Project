@@ -22,13 +22,3 @@ imp.fit(data) #iirc this function takes the average
 data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
 
-knn = KNeighborsClassifier()
-scores = cross_val_score(knn, data, target, cv=10, scoring='accuracy')
-
-k_range = range(1,61)
-weight_options = ['uniform', 'distance']
-algorithm_options = ['auto', 'ball_tree', 'kd_tree', 'brute']
-p_options = range(1,3)
-
-param_grid = {'n_neighbors': k_range, 'weights': weight_options, 'algorithm': algorithm_options, 'p': p_options}
-metrics.OptimizeClassifier(data, target, KNeighborsClassifier(), param_grid)
