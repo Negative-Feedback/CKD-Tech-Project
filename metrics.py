@@ -100,7 +100,7 @@ def OptimizeClassifier(data, target, clf, grid, scores={'f1': make_scorer(f1)}, 
         print(classification_report(y_true, y_pred))
         print()
 
-def UnivariateSelection(data, target, k=12):
+def FeatureSelection(data, target):
     test = ExtraTreesClassifier()
     test.fit(data, target)
     print(test.feature_importances_)

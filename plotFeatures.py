@@ -5,7 +5,7 @@ warnings.filterwarnings("ignore")
 
 data, target = metrics.preprocess()
 
-barHeights = metrics.UnivariateSelection(data, target)
+barHeights = metrics.FeatureSelection(data, target)
 features = ['age', 'blood pressure',  'specific gravity', 'albumin', 'sugar', 'red blood cells', 'pus cell',
             'pus cell clumps', 'bacteria', 'blood glucose random', 'blood urea', 'serum creatinine', 'sodium',
             'potassium', 'hemoglobin', 'packed cell volume', 'white blood cell count', 'red blood cell count',
