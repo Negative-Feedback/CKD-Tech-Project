@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 import metrics
+from sklearn import preprocessing
 
 dataset = arff.load(open('C:/Users/gener/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff')) # loads the dataset
 #change the filepath to where yours is
@@ -21,14 +22,12 @@ imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #fixes missing data
 imp.fit(data) #iirc this function takes the average
 data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
+minmax_scaler = preprocessing.MinMaxScaler (feature_range=(0,1))
+data_minmax = minmax_scaler.fit_transform(data)
 
-knn = KNeighborsClassifier()
-scores = cross_val_score(knn, data, target, cv=10, scoring='accuracy')
-
-k_range = range(1,61)
-weight_options = ['uniform', 'distance']
-algorithm_options = ['auto', 'ball_tree', 'kd_tree', 'brute']
-p_options = range(1,3)
-
-param_grid = {'n_neighbors': k_range, 'weights': weight_options, 'algorithm': algorithm_options, 'p': p_options}
-metrics.OptimizeClassifier(data, target, KNeighborsClassifier(), param_grid)
+#instantiating estimator object
+kn = KNeighborsClassifier(n_neighbors=3)
+scores = metrics.repeatedCrossValidatedScores(data_minmax, target, kn, cv=10, iterations=50)
+# rf.fit
+print("title/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
+metrics.printAverages("K Nearest Neighbors", scores)
