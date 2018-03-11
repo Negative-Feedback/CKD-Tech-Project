@@ -26,8 +26,8 @@ minmax_scaler = preprocessing.MinMaxScaler (feature_range=(0,1))
 data_minmax = minmax_scaler.fit_transform(data)
 
 #instantiating estimator object
-kn = KNeighborsClassifier(n_neighbors=3)
-scores = metrics.repeatedCrossValidatedScores(data_minmax, target, kn, cv=10, iterations=50)
+kn = KNeighborsClassifier(n_neighbors=1)
+scores = metrics.repeatedCrossValidatedScores(data_minmax, target, kn, cv=10, iterations=500)
 # rf.fit
 print("title/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
 metrics.printAverages("K Nearest Neighbors", scores)
