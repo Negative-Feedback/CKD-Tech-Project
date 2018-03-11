@@ -100,19 +100,20 @@ def OptimizeClassifier(data, target, clf, grid, scores={'f1': make_scorer(f1)}, 
         print(classification_report(y_true, y_pred))
         print()
 
-def FeatureSelection(data, target):
-    test = ExtraTreesClassifier()
-    test.fit(data, target)
-    print(test.feature_importances_)
-    # summarize scores
-    # np.set_printoptions(precision=3)
-    # print(fit.scores_)
-    # features = fit.transform(data)
-    # summarize selected features
-    # print(features[0:5, :])
-    return test.feature_importances_
 
-def preprocess(k=24):
+def FeatureSelection(data, target, iterations=1000, columns=24):
+    toReturn = np.zeros(columns, dtype=float)
+    for x in range(iterations):
+        test = ExtraTreesClassifier()
+        test.fit(data, target)
+        toReturn += test.feature_importances_
+    for i in range(columns):
+        toReturn[i] = toReturn[i] / float(iterations)
+    print(test.feature_importances_)
+    return toReturn
+
+
+def preprocess(k=24, fsiter=100):
     # open the arff file
     dataset = arff.load(open('chronic_kidney_disease.arff'))
 
@@ -134,16 +135,18 @@ def preprocess(k=24):
     # inserts the average into the missing spots
     data = imp.fit_transform(data)
 
-    fs = ExtraTreesClassifier()
-    fs.fit(data, target)
+    # create a classifier to perform feature selection
+    if k < 24:
+        scores = FeatureSelection(data, target, iterations=fsiter)
 
-    sortedScores = np.sort(fs.feature_importances_)
-    mask = np.ones(len(sortedScores), dtype=bool)
-    for x in range(len(sortedScores)):
-        if fs.feature_importances_[x] < sortedScores[24-k]:
-            mask[x] = False
-    for x in range(23, -1, -1):
-        if not mask[x]:
-            data = np.delete(data, x, 1)
+        # remove unnecessary columns
+        sortedScores = np.sort(scores)
+        mask = np.ones(len(sortedScores), dtype=bool)
+        for x in range(len(sortedScores)):
+            if scores[x] < sortedScores[24-k]:
+                mask[x] = False
+        for x in range(23, -1, -1):
+            if not mask[x]:
+                data = np.delete(data, x, 1)
     data, target = SMOTE().fit_sample(data, target)
     return data, target
