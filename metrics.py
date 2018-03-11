@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import Imputer
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import ExtraTreesClassifier
 from imblearn.over_sampling import SMOTE
 import numpy as np
@@ -109,11 +110,10 @@ def FeatureSelection(data, target, iterations=1000, columns=24):
         toReturn += test.feature_importances_
     for i in range(columns):
         toReturn[i] = toReturn[i] / float(iterations)
-    print(test.feature_importances_)
     return toReturn
 
 
-def preprocess(k=24, fsiter=100):
+def preprocess(k=24, fsiter=100, scaling=True):
     # open the arff file
     dataset = arff.load(open('chronic_kidney_disease.arff'))
 
@@ -134,6 +134,10 @@ def preprocess(k=24, fsiter=100):
 
     # inserts the average into the missing spots
     data = imp.fit_transform(data)
+
+    if scaling:
+        minmax_scaler = MinMaxScaler(feature_range=(0, 1))
+        data = minmax_scaler.fit_transform(data)
 
     # create a classifier to perform feature selection
     if k < 24:

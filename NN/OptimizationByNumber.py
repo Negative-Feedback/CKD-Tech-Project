@@ -4,7 +4,7 @@ import metrics
 import warnings
 warnings.filterwarnings("ignore")
 
-data, target = metrics.preprocess()
+data, target = metrics.preprocess(k=8, fsiter=1000)
 
 # 16, 14, 11 is the best so far, 6,3 was the best for 2 layers
 hlayers = [43, 73, 321, (54, 38), (35, 26), (30, 11), (30, 17, 9), (63, 10)]
