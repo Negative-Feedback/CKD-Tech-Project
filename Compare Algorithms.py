@@ -13,7 +13,7 @@ classifiers = {'Support Vector Machine': svm.SVC(C=1, kernel='linear', decision_
                'Random Forest': RandomForestClassifier(n_estimators=250),
                'Logistic Regression': LogisticRegression(C=1000),
                'Neural Network': MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=6, random_state=1),
-               'Nearest Neighbours': KNeighborsClassifier(n_neighbors=3),
+               'Nearest Neighbours': KNeighborsClassifier(n_neighbors=1),
                'Decision Tree': tree.DecisionTreeClassifier()}
 datasets = {'Support Vector Machine': metrics.preprocess(k=13, fsiter=1000),
             'Decision Tree': metrics.preprocess(k=15, fsiter=1000),
@@ -44,11 +44,11 @@ sensitivities = []
 specificities = []
 for key in classifiers.keys():
     data, target = datasets[key]
-    temp = metrics.repeatedCrossValidatedScores(data, target, classifiers[key], iterations=50, cv=10)
+    temp = metrics.repeatedCrossValidatedScores(data, target, classifiers[key], iterations=100, cv=10)
     metrics.printAverages(key, temp)
-    accuracies.append(np.average(temp['test_accuracy']) - 0.7)
-    sensitivities.append(np.average(temp['test_sensitivity']) - 0.7)
-    specificities.append(np.average(temp['test_specificity']) - 0.7)
+    accuracies.append(np.average(temp['test_accuracy']) - 0.9)
+    sensitivities.append(np.average(temp['test_sensitivity']) - 0.9)
+    specificities.append(np.average(temp['test_specificity']) - 0.9)
 
 plt.figure()
 ax = plt.subplot()
@@ -56,8 +56,8 @@ plt.xticks([2, 6, 10, 14, 18, 22], classifiers.keys(), size=5.5)
 plt.yticks([0.9, 0.925, 0.95, 0.975, 1.0], ["90%", "92.5%", "95%", "97.5%", "100%"])
 plt.title('Relative Accuracy, Sensitivity, and Specificity of Algorithms')
 plt.xlabel('Algorithm', size=8)
-sens = ax.bar([1, 5, 9, 13, 17, 21], sensitivities, width=0.8, color='red', bottom=0.7)
-acc = ax.bar([2, 6, 10, 14, 18, 22], accuracies, width=0.8, color='green', bottom=0.7)
-spec = ax.bar([3, 7, 11, 15, 19, 23], specificities, width=0.8, color='blue', bottom=0.7)
-plt.legend((sens, acc, spec), ('sensitivity', 'accuracy', 'specificity'), fontsize=7)
+sens = ax.bar([1, 5, 9, 13, 17, 21], sensitivities, width=0.8, color='red', bottom=0.9)
+acc = ax.bar([2, 6, 10, 14, 18, 22], accuracies, width=0.8, color='green', bottom=0.9)
+spec = ax.bar([3, 7, 11, 15, 19, 23], specificities, width=0.8, color='blue', bottom=0.9)
+plt.legend((sens, acc, spec), ('sensitivity', 'accuracy', 'specificity'), fontsize=9)
 plt.show()

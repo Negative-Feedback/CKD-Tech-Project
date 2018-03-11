@@ -39,13 +39,21 @@ def roc(y_true, y_pred):
     return roc_curve(y_true, y_pred, pos_label='1')
 '''
 
+
+def unisonshuffle(a, b):
+    rng_state = np.random.get_state()
+    np.random.shuffle(a)
+    np.random.set_state(rng_state)
+    np.random.shuffle(b)
+    return a, b
+
 def crossValidatedScores(data, target, clf, cv=3):
-    data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.3)
     scoring = {'tp': make_scorer(tp), 'tn': make_scorer(tn), 'fp': make_scorer(fp), 'fn': make_scorer(fn),
                'accuracy': make_scorer(accuracy), 'f1': make_scorer(f1), 'precision': make_scorer(precision),
                'sensitivity': make_scorer(sensitivity), 'specificity': make_scorer(specificity)}
                #'ROC': make_scorer(roc)}
-    results = cross_validate(clf.fit(data_train, target_train), data_test, target_test, scoring=scoring, cv=cv)
+
+    results = cross_validate(clf, data, target, scoring=scoring, cv=cv, return_train_score=False)
     return results
 
 
@@ -62,11 +70,12 @@ def repeatedCrossValidatedScores(_data, _target, _clf, iterations=50, cv=2):
     toreturn = crossValidatedScores(_data, _target, _clf, cv=cv)
 
     for i in range(0, iterations - 1):
+        _data, _target = unisonshuffle(_data, _target)
         temp = crossValidatedScores(_data, _target, _clf, cv=cv)
         toreturn = {k: temp.get(k, 0) + toreturn.get(k, 0) for k in set(temp)}
 
-    toReturn = {k: v / iterations for k, v in toreturn.items()}
-    return toReturn
+    toreturn = {k: v / iterations for k, v in toreturn.items()}
+    return toreturn
 
 
 def OptimizeClassifier(data, target, clf, grid, scores={'f1': make_scorer(f1)}, cv=10, refit='f1'):
