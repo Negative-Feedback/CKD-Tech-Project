@@ -7,7 +7,7 @@ import metrics
 import warnings
 warnings.filterwarnings("ignore")
 
-data, target = metrics.preprocess(k=8, fsiter=1000)
+data, target = metrics.preprocess(k=8, fsiter=1000, scaling=False)
 
 # default values
 ideal = [0]

@@ -10,7 +10,7 @@ import metrics
 import warnings
 warnings.filterwarnings("ignore")
 
-data, target = metrics.preprocess()
+data, target = metrics.preprocess(k=8, fsiter=1000)
 
 neuron_range = [516, 337, 710, 372, 814, 630, 790, 858, 502, 986, 616, 822, 351, 906, 467, 498, 735, 427, 830, 650,
                 115, 411, 867, 904, 810, 321, 453, 618, 939, 660, 949, 673, 720, 719, 201, 956, 523, 760, 809, 992,
@@ -22,10 +22,10 @@ sens_range = []
 neuron_accuracy = []
 neuron_sensitivity = []
 neuron_specificity = []
-for x in neuron_range:
+for x in range(1, 11):
     temp = metrics.repeatedCrossValidatedScores(data, target,
                                MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=x, random_state=1),
-                               iterations=50, cv=10)
+                               iterations=10, cv=10)
     metrics.printAverages(x, temp)
     # neuron_accuracy.append(np.average(temp['test_accuracy']))
     if (np.average(temp['test_sensitivity']) > 0.5) & (np.average(temp['test_specificity']) > 0.5):
@@ -34,10 +34,12 @@ for x in neuron_range:
         neuron_accuracy.append(np.average(temp['test_accuracy']))
         sens_range.append(x)
 
-acc = plt.plot(sens_range, neuron_accuracy, label='accuracy')
-sens = plt.plot(sens_range, neuron_sensitivity, label='sensitivity')
-spec = plt.plot(sens_range, neuron_specificity, label='specificity')
-plt.xlabel('Number of Neurons')
-plt.ylabel('Cross-Validation Accuracy')
-plt.grid = True
+acc, = plt.plot(sens_range, neuron_accuracy, label='Accuracy')
+sens, = plt.plot(sens_range, neuron_sensitivity, label='Sensitivity')
+spec, = plt.plot(sens_range, neuron_specificity, label='Specificity')
+plt.title("Selecting the Right Number of Neurons")
+plt.xlabel('Number of Neurons in the single-layer neural network')
+plt.ylabel('Cross-Validated Metric')
+plt.yticks([0.95, 0.96, 0.97, 0.98, 0.99, 1], ["95%", "96%", "97%", "98%", "99%", "100%"])
+plt.legend(handles=[sens, acc, spec], fontsize=9)
 plt.show()

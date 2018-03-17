@@ -1,7 +1,6 @@
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 from sklearn.metrics.scorer import make_scorer
@@ -27,13 +26,19 @@ def specificity(y_true, y_pred):
     else:
         return float(tn(y_true, y_pred)) / float((tn(y_true, y_pred) + fp(y_true, y_pred)))
 def f1(y_true, y_pred):
-    return f1_score(y_true, y_pred, pos_label='1')
+    return 2 * (precision(y_true, y_pred) * sensitivity(y_true, y_pred)) / (precision(y_true, y_pred) +
+                                                                            sensitivity(y_true, y_pred))
 def sensitivity(y_true, y_pred):
-    return recall_score(y_true, y_pred, pos_label='1')
+    if tp(y_true, y_pred) + fn(y_true, y_pred) == 0:
+        return 0
+    else:
+        return float(tp(y_true, y_pred)) / float((tp(y_true, y_pred) + fn(y_true, y_pred)))
+
 def precision(y_true, y_pred):
-    return precision_score(y_true, y_pred, pos_label='1')
+    return tp(y_true, y_pred) / (tp(y_true, y_pred) + fp(y_true, y_pred))
 def accuracy(y_true, y_pred):
-    return accuracy_score(y_true, y_pred)
+    return (tp(y_true, y_pred) + tn(y_true, y_pred)) / ((tp(y_true, y_pred) + tn(y_true, y_pred) + fp(y_true, y_pred)
+                                                         + fn(y_true, y_pred)))
 '''
 def roc(y_true, y_pred):
     return roc_curve(y_true, y_pred, pos_label='1')
