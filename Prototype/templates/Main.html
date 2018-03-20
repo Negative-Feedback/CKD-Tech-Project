@@ -1,31 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <style>
+         body {
+            background-color: lightgrey;
+         }
+         #Main {
+            position:absolute;
+            right: 0px;
+            left: 0%;
+            display: inline-block;
+                min-width: 22%;
+            min-height: 220px;
+            border: 2px solid black;
+                padding: 10px 0;
+                text-align: center;
+                background-color: lightgreen;
+         }
+     </style>
     <meta charset="UTF-8">
     <title>Prototype</title>
 </head>
 <body>
-    <h1>CKD Predictor</h1>
-    <div>
-        <a href="url">Home</a>      <a href="url">About</a>
+<div id="Main">
+        <h1>CKD Predictor</h1>
+        <div>
+            <a href="url">Home</a>      <a href="url">About</a>
+        </div>
+        <div>
+            Source:<br>
+            <input type = "file" name = "file" />
+            <br><br>
+        </div>
+        <div>
+            <input type="text" name="f1" size="4">
+            <input type="text" name="f2" size="4">
+            <input type="text" name="f3" size="4">
+            <input type="text" name="f4" size="4">
+            <input type="text" name="f5" size="4">
+            <input type="text" name="f6" size="4">
+            <input type="text" name="f7" size="4">
+            <input type="text" name="f8" size="4">
+        </div>
+        <br><br><br><br>
+        <button type="button">Calculate</button>
+        <output name="result" for=""></output>
     </div>
-    <div>
-        Source:<br>
-        <input type = "file" name = "file" />
-        <br><br>
-    </div>
-    <div>
-        <input type="text" name="f1" size="4">
-        <input type="text" name="f2" size="4">
-        <input type="text" name="f3" size="4">
-        <input type="text" name="f4" size="4">
-        <input type="text" name="f5" size="4">
-        <input type="text" name="f6" size="4">
-        <input type="text" name="f7" size="4">
-        <input type="text" name="f8" size="4">
-    </div>
-<br><br><br><br>
-<button type="button">Calculate</button>
-<output name="result" for=""></output>
 </body>
 </html>
