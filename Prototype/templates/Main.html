@@ -1,23 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <style>
-         body {
-            background-color: lightgreen;
-         }
-         #Main {
-            position:absolute;
-            right: 0px;
-            left: 0%;
-            display: inline-block;
-                min-width: 22%;
-            min-height: 220px;
-            border: 0px solid black;
-                padding: 10px 0;
-                text-align: center;
-                background-color: lightgreen;
-         }
-     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Main.css') }}">
     <meta charset="UTF-8">
     <title>Prototype</title>
 </head>
@@ -25,7 +9,7 @@
 <div id="Main">
         <h1>CKD Predictor</h1>
         <div>
-            <a href="url">Home</a>      <a href="url">About</a>
+            <button type="button">Home</button><button type="button">About</button>
         </div>
         <div>
             Source:<br>
