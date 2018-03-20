@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-@app.route('/Main')
+@app.route('/')
 def Main_file():
     return render_template('Main.html')
 
