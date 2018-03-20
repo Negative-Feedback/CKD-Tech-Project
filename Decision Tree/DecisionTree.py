@@ -16,7 +16,7 @@ data , target = metrics.preprocess(k=10, fsiter=1000)
 
 #instantiating estimator object
 dt = DecisionTreeClassifier()
-scores = metrics.repeatedCrossValidatedScores(data, target, dt, cv=10, iterations=100)
+scores = metrics.repeatedCrossValidatedScores(data, target, dt, cv=10, iterations=400)
 # rf.fit
 print("title/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
 metrics.printAverages("Decision Tree", scores)
