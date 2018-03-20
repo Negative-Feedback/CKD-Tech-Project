@@ -5,12 +5,15 @@
     <title>Prototype</title>
 </head>
 <body>
-    <form action = "http://localhost:5000/uploader" method = "POST"
-         enctype = "multipart/form-data">
-         <input type = "file" name = "file" />
-         <input type = "submit"/>
-      </form>
-
+    <h1>CKD Predictor</h1>
+    <div>
+        <a href="url">Home</a>      <a href="url">About</a>
+    </div>
+    <div>
+        Source:<br>
+        <input type = "file" name = "file" />
+        <br><br>
+    </div>
     <div>
         <input type="text" name="f1" size="4">
         <input type="text" name="f2" size="4">
@@ -21,5 +24,8 @@
         <input type="text" name="f7" size="4">
         <input type="text" name="f8" size="4">
     </div>
+<br><br><br><br>
+<button type="button">Calculate</button>
+<output name="result" for=""></output>
 </body>
 </html>
