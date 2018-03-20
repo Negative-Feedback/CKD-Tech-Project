@@ -22,10 +22,10 @@ sens_range = []
 neuron_accuracy = []
 neuron_sensitivity = []
 neuron_specificity = []
-for x in range(1, 11):
+for x in range(1, 101):
     temp = metrics.repeatedCrossValidatedScores(data, target,
                                MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=x, random_state=1),
-                               iterations=10, cv=10)
+                               iterations=100, cv=10)
     metrics.printAverages(x, temp)
     # neuron_accuracy.append(np.average(temp['test_accuracy']))
     if (np.average(temp['test_sensitivity']) > 0.5) & (np.average(temp['test_specificity']) > 0.5):
@@ -40,6 +40,6 @@ spec, = plt.plot(sens_range, neuron_specificity, label='Specificity')
 plt.title("Selecting the Right Number of Neurons")
 plt.xlabel('Number of Neurons in the single-layer neural network')
 plt.ylabel('Cross-Validated Metric')
-plt.yticks([0.95, 0.96, 0.97, 0.98, 0.99, 1], ["95%", "96%", "97%", "98%", "99%", "100%"])
+plt.yticks([0.98, 0.985, 0.99, 0.995, 1], ["98%", "98.5%", "99%", "99.5%", "100%"])
 plt.legend(handles=[sens, acc, spec], fontsize=9)
 plt.show()

@@ -14,7 +14,7 @@ classifiers = {'Support Vector Machine': svm.SVC(C=1, kernel='linear', decision_
                'Logistic Regression': LogisticRegression(C=1000),
                'Nearest Neighbours': KNeighborsClassifier(n_neighbors=1),
                'Decision Tree': tree.DecisionTreeClassifier(),
-               'Neural Network': MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=39, random_state=1)}
+               'Neural Network': MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=54, random_state=1)}
 datasets = {'Support Vector Machine': metrics.preprocess(k=13, fsiter=1000),
             'Decision Tree': metrics.preprocess(k=15, fsiter=1000),
             'Random Forest': metrics.preprocess(k=20, fsiter=1000, scaling=False),
