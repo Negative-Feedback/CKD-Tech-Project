@@ -1,18 +1,21 @@
-from flask import Flask, render_template, request
+import os
+from flask import Flask, redirect, url_for, render_template, request
 from werkzeug.utils import secure_filename
 
+UPLOAD_FOLDER = '/Prototype'
+ALLOWED_EXTENSIONS = set(['arff'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/Main')
 def Main_file():
     return render_template('Main.html')
-def Maincss_file():
-    return render_template('Main.css')
 
 
 
-@app.route('/uploader', methods=['GET', 'POST'])
+@app.route('/results', methods=['GET', 'POST'])
 def uploader_file():
     if request.method == 'POST':
         f = request.files['file']
