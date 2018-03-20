@@ -7,6 +7,9 @@ app = Flask(__name__)
 @app.route('/Main')
 def Main_file():
     return render_template('Main.html')
+def Maincss_file():
+    return render_template('Main.css')
+
 
 
 @app.route('/uploader', methods=['GET', 'POST'])
