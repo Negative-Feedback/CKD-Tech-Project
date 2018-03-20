@@ -2,15 +2,20 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='Main.css') }}">
+    <script type=text/javascript src="{{url_for('static', filename='Main.js') }}"></script>
     <meta charset="UTF-8">
     <title>Prototype</title>
 </head>
-<body>
-<div id="Main">
+<body onload="run()">
+<div id="Selection">
+            <button type="button" onclick="Home_function()">Home</button><button type="button" onclick="About_function()">About</button>
+</div>
+<div id="About">
+
+</div>
+<div id="Home">
         <h1>CKD Predictor</h1>
-        <div>
-            <button type="button">Home</button><button type="button">About</button>
-        </div>
+
         <div>
             Source:<br>
             <input type = "file" name = "file" />
