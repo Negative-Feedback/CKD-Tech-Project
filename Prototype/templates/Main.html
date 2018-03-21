@@ -2,6 +2,22 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='Main.css') }}">
+    <script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
+    <script>
+        $(function() {
+            $('#submit').click(function() {
+                event.preventDefault();
+                var form_data = new FormData($('#upload_file')[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/upload_file',
+                    data: form_data,
+                    contentType: false,
+                    processData: false,
+                })
+            });
+        });
+    </script>
     <script type=text/javascript src="{{url_for('static', filename='Main.js') }}"></script>
     <meta charset="UTF-8">
     <title>Prototype</title>
@@ -9,19 +25,17 @@
 <body onload="run()">
 <div id="Selection">
     <h1>CKD Predictor</h1>
-    <button type="button" onclick="Home_function()">Home</button><button type="button" onclick="About_function()">About</button>
+    <button id="Upload" type="button" onclick="Home_function()">Home</button><button type="button" onclick="About_function()">About</button>
 </div>
 <div id="About">
 
 </div>
 <div id="Home">
         <div>
-
-            <form action="/" method="post" onsubmit="return upload();">
-                Source:<br>
-                <input type = "file" name = "file" />
-                <input type="submit" value="Upload">
-            </form>
+            <form id="upload_file">
+                 <input type = "file" name = "file" id="file_dat"/>
+                 <input type = "submit" id="submit"/>
+              </form>
             <br><br>
         </div>
         <div>
