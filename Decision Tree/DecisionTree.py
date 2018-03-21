@@ -12,7 +12,7 @@ import metrics
 import graphviz
 from sklearn.tree import export_graphviz
 
-data , target = metrics.preprocess(k=10, fsiter=1000)
+data , target = metrics.preprocess(k=8, fsiter=1000, scaling=False)
 
 #instantiating estimator object
 dt = DecisionTreeClassifier()

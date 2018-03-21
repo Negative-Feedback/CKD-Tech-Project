@@ -11,7 +11,7 @@ from sklearn.model_selection import GridSearchCV
 import metrics
 from sklearn import preprocessing
 
-data , target = metrics.preprocess(k=10, fsiter=1000)
+data , target = metrics.preprocess(k=8, fsiter=1000)
 
 
 # param_grid = {"max_depth": [3, None],

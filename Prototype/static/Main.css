@@ -1,6 +1,19 @@
 body {
-	background-color: lightgrey;
+	background-color: #9c9f84;
+	margin: 0px;
+	font-family: Verdana, Georgia, Serif;
+	font-size: 14px;
 }
+
+h1 {
+	text-align: center;
+	font-size: 64px;
+	background-color: #5c755e;
+	margin: 10px;
+	height: 90px;
+	border-radius: 5px;
+}
+
 #Home {
 	position: absolute;
 	right: 0px;
