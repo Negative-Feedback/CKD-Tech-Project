@@ -1,46 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <style>
-         body {
-            background-color: lightgreen;
-         }
-         #Main {
-            position:absolute;
-            right: 0px;
-            left: 0%;
-            display: inline-block;
-                min-width: 22%;
-            min-height: 220px;
-            border: 0px solid black;
-                padding: 10px 0;
-                text-align: center;
-                background-color: lightgreen;
-         }
-     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Main.css') }}">
+    <script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
+    <script>
+        $(function() {
+            $('#upload').click(function() {
+                event.preventDefault();
+                var form_data = new FormData($('#upload_file')[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/upload_file',
+                    data: form_data,
+                    contentType: false,
+                    processData: false,
+                }).done(function(data){
+                    $("#file_status").text('Upload Successful');
+                }).fail(function(data){
+                    $("#file_status").text('Upload Failed');
+                });
+            });
+        });
+
+    </script>
+    <script type=text/javascript src="{{url_for('static', filename='Main.js') }}"></script>
     <meta charset="UTF-8">
     <title>Prototype</title>
 </head>
-<body>
-<div id="Main">
-        <h1>CKD Predictor</h1>
+<body onload="run()">
+<div id="Selection">
+    <h1>CKD Predictor</h1>
+    <button type="button" onclick="Home_function()">Home</button><button type="button" onclick="About_function()">About</button>
+</div>
+<div id="About">
+
+</div>
+<div id="Home">
         <div>
-            <a href="url">Home</a>      <a href="url">About</a>
-        </div>
-        <div>
-            Source:<br>
-            <input type = "file" name = "file" />
+            <form id="upload_file">
+                 <input type = "file" name = "file" id="file_dat"/>
+                 <input type = "submit" id="upload" value="Upload File"/>
+              </form>
+            <p><span id="file_status"></span></p>
             <br><br>
         </div>
         <div>
-            <input type="text" name="f1" size="4">
-            <input type="text" name="f2" size="4">
-            <input type="text" name="f3" size="4">
-            <input type="text" name="f4" size="4">
-            <input type="text" name="f5" size="4">
-            <input type="text" name="f6" size="4">
-            <input type="text" name="f7" size="4">
-            <input type="text" name="f8" size="4">
+
+            <table style="width:100%">
+                <tr>
+                    <th>
+                        Specific gravity<br>
+                        <input type="text" name="f1" size="7" value="Ex. 1.015">
+                    </th>
+                    <th>
+                        Hypertension<br>
+                        <input type="text" name="f2" size="7" value="Yes/No">
+                    </th>
+                    <th>
+                        Red blood cells<br>
+                        <input type="text" name="f3" size="7" value="millions/cmm">
+                    </th>
+                    <th>
+                        Diabetes mellitus<br>
+                        <input type="text" name="f4" size="7" value="Yes/No">
+                    </th>
+                    <th>
+                        Albumin<br>
+                        <input type="text" name="f5" size="7" value="Val. 1-5">
+                    </th>
+                    <th>
+                        Hemoglobin<br>
+                        <input type="text" name="f6" size="7" valeu="gms">
+                    </th>
+                    <th>
+                        Packed Cell Volume<br>
+                        <input type="text" name="f7" size="7" value="numerical">
+                    </th>
+                    <th>
+                        Pus cell<br>
+                        <input type="text" name="f8" size="7">
+                    </th>
+                </tr>
+            </table>
         </div>
         <br><br><br><br>
         <button type="button">Calculate</button>
