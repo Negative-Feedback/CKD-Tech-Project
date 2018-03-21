@@ -11,7 +11,7 @@ for features in range(1, 25):
     for neuron in range(40, 60):
         temp = metrics.repeatedCrossValidatedScores(data, target,
                                MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=neuron, random_state=1),
-                               iterations=50, cv=10)
+                               iterations=100, cv=10)
         metrics.printAverages((features, neuron), temp)
         if np.average(temp['test_accuracy']) > maxacc:
             maxacc = np.average(temp['test_accuracy'])
