@@ -4,7 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
 from sklearn import metrics
-from imblearn.over_sampling import SMOTE
+from imblearn.over_sampling import SMOTEb
 import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
@@ -22,17 +22,21 @@ imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #fixes missing data
 imp.fit(data) #iirc this function takes the average
 data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
-data_l1 = preprocessing.normalize(data, norm='l1')
+minmax_scaler = preprocessing.MinMaxScaler (feature_range=(0,1))
+data_minmax = minmax_scaler.fit_transform(data)
 
 k_range = range (1,26)
 error_scores = []
 for k in k_range:
     knn = KNeighborsClassifier(n_neighbors = k)
-    scores = metrics.repeatedCrossValidatedScores(data_l1, target, knn, cv=10, iterations=25)
+    scores = metrics.repeatedCrossValidatedScores(data_minmax, target, knn, cv=10, iterations=50)
     error_scores.append(1-scores['test_accuracy'].mean())
     print(k)
 
 plt.plot(k_range, error_scores)
-plt.xlabel('Number of Neighbours(K)')
-plt.ylabel('% error')
+plt.title('KNN vs. % Error', size=11, fontweight='bold')
+plt.xlabel('Number of Neighbours(K)', size=8)
+plt.xticks([1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25])
+plt.ylabel('% Error', size=8)
+plt.yticks([0.4, 0.8, 1.2, 1.6, 2.0])
 plt.show()

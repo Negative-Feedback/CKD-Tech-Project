@@ -29,7 +29,7 @@ def findMax(accuracy): # finds the largest value in an array
 
     return max
 
-dataset = arff.load(open('C:/Users/Matthew/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff')) # loads the dataset
+dataset = arff.load(open('C:/Users/gener/PycharmProjects/CKD-Tech-Project/chronic_kidney_disease.arff')) # loads the dataset
 #change the filepath to where yours is
 
 raw_data = np.array(dataset['data']) # pulls the data out into a numpy array
