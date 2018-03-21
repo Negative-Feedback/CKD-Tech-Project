@@ -22,7 +22,7 @@ imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #fixes missing data
 imp.fit(data) #iirc this function takes the average
 data = imp.fit_transform(data) #inserts the average into the missing spots
 data, target = SMOTE().fit_sample(data, target) # oversamples the minority class (notckd)
-minmax_scaler = preprocessing.MinMaxScaler (feature_range=(0,1))
+minmax_scaler = preprocessing.MinMaxScaler (feature_range=(0, 1))
 data_minmax = minmax_scaler.fit_transform(data)
 
 #instantiating estimator object

@@ -155,9 +155,14 @@ def preprocess(k=24, fsiter=100, scaling=True):
 
     # create a classifier to perform feature selection
     if k < 24:
-        scores = FeatureSelection(data, target, iterations=fsiter)
-        # remove unnecessary columns
-        sortedScores = np.sort(scores)
+        while True:
+            scores = FeatureSelection(data, target, iterations=fsiter)
+            print(scores)
+            # remove unnecessary columns
+            sortedScores = np.sort(scores)
+            print(sortedScores)
+            if sortedScores[16] == scores[6]:
+                break
         mask = np.ones(len(sortedScores), dtype=bool)
         for x in range(len(sortedScores)):
             if scores[x] < sortedScores[24-k]:
