@@ -12,15 +12,15 @@ data, target = metrics.preprocess()
 classifiers = {'Support Vector Machine': svm.SVC(C=1, kernel='linear', decision_function_shape='ovo', random_state=6),
                'Random Forest': RandomForestClassifier(n_estimators=250),
                'Logistic Regression': LogisticRegression(C=1000),
-               'Nearest Neighbours': KNeighborsClassifier(n_neighbors=1),
+               'Nearest Neighbours': KNeighborsClassifier(n_neighbors=6),
                'Decision Tree': tree.DecisionTreeClassifier(),
                'Neural Network': MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=54, random_state=1)}
 datasets = {'Support Vector Machine': metrics.preprocess(k=13, fsiter=1000),
-            'Decision Tree': metrics.preprocess(k=15, fsiter=1000),
-            'Random Forest': metrics.preprocess(k=20, fsiter=1000, scaling=False),
-            'Logistic Regression': metrics.preprocess(k=10, fsiter=1000),
-            'Neural Network': metrics.preprocess(k=8, fsiter=1000, scaling=False),
-            'Nearest Neighbours': metrics.preprocess(k=10, fsiter=1000)}
+            'Decision Tree': metrics.preprocess(k=6, fsiter=1000, scaling=False),
+            'Random Forest': metrics.preprocess(k=6, fsiter=1000, scaling=False),
+            'Logistic Regression': metrics.preprocess(k=11, fsiter=1000),
+            'Neural Network': metrics.preprocess(k=8, fsiter=1000, scaling=True),
+            'Nearest Neighbours': metrics.preprocess(k=8, fsiter=1000)}
 
 accuracies = []
 sensitivities = []
