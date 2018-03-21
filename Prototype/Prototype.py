@@ -19,6 +19,7 @@ def Main_file():
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
+        f.filename = "temp_upload.arff"
         f.save(secure_filename(f.filename))
         return 'file uploaded successfully'
 
