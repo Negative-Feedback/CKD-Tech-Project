@@ -8,17 +8,19 @@
             $('#upload').click(function() {
                 event.preventDefault();
                 var form_data = new FormData($('#upload_file')[0]);
-                $.ajax({
-                    type: 'POST',
-                    url: '/upload_file',
-                    data: form_data,
-                    contentType: false,
-                    processData: false,
-                }).done(function(data){
-                    $("#file_status").text('Upload Successful');
-                }).fail(function(data){
-                    $("#file_status").text('Upload Failed');
-                });
+                $("#file_status").text('Upload Successful');
+                var fileList = document.getElementById("file_dat").files; /* now you can work with the file list */
+                var reader = new FileReader();
+                reader.onload = function(){
+                     var dataText = reader.result.substring(reader.result.indexOf("@data") + 7);
+                     var data = dataText.split(",");
+                     $("#file_status").text(dataText);
+                     //document.write(reader.result.substring(0, 200))
+                     for (i = 0; i < 8; i++) {
+                         document.getElementsByName("f" + (i + 1) + "")[0].value = data[i];
+                     }
+                };
+                reader.readAsText(fileList[0]);
             });
         });
 
@@ -38,7 +40,7 @@
 <div id="Home">
         <div>
             <form id="upload_file">
-                 <input type = "file" name = "file" id="file_dat"/>
+                 <input type="file" name = "file" id="file_dat"/>
                  <input type = "submit" id="upload" value="Upload File"/>
               </form>
             <p><span id="file_status"></span></p>
@@ -53,32 +55,32 @@
                         <input type="text" name="f1" size="7" value="Ex. 1.015">
                     </th>
                     <th>
-                        Hypertension<br>
-                        <input type="text" name="f2" size="7" value="Yes/No">
+                        Albumin<br>
+                        <input type="text" name="f2" size="7" value="Val. 1-5">
                     </th>
                     <th>
                         Red blood cells<br>
-                        <input type="text" name="f3" size="7" value="millions/cmm">
+                        <input type="text" name="f3" size="7" value="normal/abnormal">
                     </th>
                     <th>
-                        Diabetes mellitus<br>
-                        <input type="text" name="f4" size="7" value="Yes/No">
-                    </th>
-                    <th>
-                        Albumin<br>
-                        <input type="text" name="f5" size="7" value="Val. 1-5">
+                        Pus Cell<br>
+                        <input type="text" name="f4" size="7" value="normal/abnormal">
                     </th>
                     <th>
                         Hemoglobin<br>
-                        <input type="text" name="f6" size="7" valeu="gms">
+                        <input type="text" name="f5" size="7" value="gms">
                     </th>
                     <th>
                         Packed Cell Volume<br>
-                        <input type="text" name="f7" size="7" value="numerical">
+                        <input type="text" name="f6" size="7" value="numerical">
                     </th>
                     <th>
-                        Pus cell<br>
-                        <input type="text" name="f8" size="7">
+                        Hypertension<br>
+                        <input type="text" name="f7" size="7" value="yes/no">
+                    </th>
+                    <th>
+                        Diabetes Mellitus<br>
+                        <input type="text" name="f8" size="7" value="yes/no">
                     </th>
                 </tr>
             </table>

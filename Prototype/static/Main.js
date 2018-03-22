@@ -1,7 +1,6 @@
 function run() {	//On start up the function will load
 			var Home = document.getElementById("Home");
 			var About = document.getElementById("About");
-
 			About.style.display = "none";
 			Home.style.display = "block";
 		}
