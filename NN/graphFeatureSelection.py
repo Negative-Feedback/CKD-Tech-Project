@@ -7,7 +7,7 @@ sens_range = []
 neuron_accuracy = []
 for features in range(1, 25):
     data, target = metrics.preprocess(k=features, fsiter=1000)
-    maxacc = 0
+    maxacc = 0.0
     for neuron in range(40, 60):
         temp = metrics.repeatedCrossValidatedScores(data, target,
                                MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=neuron, random_state=1),

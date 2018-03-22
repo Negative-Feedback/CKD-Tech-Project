@@ -17,7 +17,45 @@
                      //$("#file_status").text(dataText);
                      //document.write(reader.result.substring(0, 200))
                      for (i = 0; i < 8; i++) {
-                         document.getElementsByName("f" + (i + 1) + "")[0].value = data[i];
+                         if(i == 2,3) {
+                             if (data[i] == "normal") {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "0";
+                             }
+                             else{
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "1";
+                             }
+                         }
+                         if(i == 6,7){
+                             if (data[i] == "yes") {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "0";
+                             }
+                             else{
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "1";
+                             }
+                         }
+                         if(i == 4,5){
+                             document.getElementsByName("f" + (i + 1) + "")[0].value = data[i];
+                         }
+                         if(i == 1){
+                             document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = parseInt(data[i]);
+                         }
+                         if(i == 0){
+                             if (data[i] == "1.005") {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "0";
+                             }
+                             if (data[i] == "1.010") {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "1";
+                             }
+                             if (data[i] == "1.015") {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "2";
+                             }
+                             if (data[i] == "1.020") {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "3";
+                             }
+                             if (data[i] == "1.025") {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "4";
+                             }
+                         }
                      }
                 };
                 reader.readAsText(fileList[0]);
@@ -29,7 +67,7 @@
                 event.preventDefault();
                 var data_str = '';
                 for (var j = 0; j < 8; j++) {
-                         data_str = data_str + document.getElementsByName("f" + (j + 1) + "")[0].value;
+                             data_str = data_str + document.getElementsByName("f" + (j + 1) + "")[0].value;
                          if (j != 7){
                              data_str = data_str + ',';
                          }
@@ -78,19 +116,38 @@
                 <tr>
                     <th>
                         Specific gravity<br>
-                        <input type="text" name="f1" size="7" value="Ex. 1.015">
+                        <select name="f1">
+                          <option value="1.005">1.005</option>
+                          <option value="1.010">1.010</option>
+                          <option value="1.015">1.015</option>
+                          <option value="1.020">1.020</option>
+                          <option value="1.025">1.025</option>
+                        </select>
                     </th>
                     <th>
                         Albumin<br>
-                        <input type="text" name="f2" size="7" value="Val. 1-5">
+                        <select name="f2">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
                     </th>
                     <th>
                         Red blood cells<br>
-                        <input type="text" name="f3" size="7" value="normal/abnormal">
+                        <select name="f3">
+                          <option value="normal">normal</option>
+                          <option value="abnormal">abnormal</option>
+                        </select>
                     </th>
                     <th>
                         Pus Cell<br>
-                        <input type="text" name="f4" size="7" value="normal/abnormal">
+                        <select name="f4">
+                          <option value="normal">normal</option>
+                          <option value="abnormal">abnormal</option>
+                        </select>
                     </th>
                     <th>
                         Hemoglobin<br>
@@ -102,11 +159,17 @@
                     </th>
                     <th>
                         Hypertension<br>
-                        <input type="text" name="f7" size="7" value="yes/no">
+                        <select name="f7">
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
                     </th>
                     <th>
                         Diabetes Mellitus<br>
-                        <input type="text" name="f8" size="7" value="yes/no">
+                        <select name="f8">
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
                     </th>
                 </tr>
             </table>
