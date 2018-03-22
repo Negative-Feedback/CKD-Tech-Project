@@ -11,6 +11,7 @@ from sklearn.preprocessing import Imputer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import ExtraTreesClassifier
 from imblearn.over_sampling import SMOTE
+from sklearn.externals import joblib
 import numpy as np
 import warnings
 import arff
@@ -148,6 +149,7 @@ def preprocess(k=24, fsiter=100, scaling=True):
 
     # inserts the average into the missing spots
     data = imp.fit_transform(data)
+    print(data[0])
 
     if scaling:
         minmax_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -171,4 +173,82 @@ def preprocess(k=24, fsiter=100, scaling=True):
             if not mask[x]:
                 data = np.delete(data, x, 1)
     data, target = SMOTE().fit_sample(data, target)
+    print(data[1])
     return data, target
+
+def data():
+    dataset = arff.load(open('chronic_kidney_disease.arff'))
+
+    # pulls the data into a numpy array
+    raw_data = np.array(dataset['data'])
+
+    # takes everything except the last column
+    data = raw_data[:, :-1]
+
+    # just the last column
+    target = raw_data[:, -1]
+
+    # fixes missing data by taking values from other rows and taking the average
+    imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
+
+    # this function takes the average of every column excluding the unknown values
+    imp.fit(data)
+
+    # inserts the average into the missing spots
+    data = imp.fit_transform(data)
+    for x in [0, 1, 4, 7, 8, 9, 10, 11, 12, 13, 16, 17, 20, 21, 22, 23]:
+        data = np.delete(data, x, 1)
+    return data
+
+
+def classify():
+    dataset = arff.load(open('temp_upload.arff'))
+    raw_data = np.array(dataset['data'])[0]
+    print(raw_data)
+    data = np.zeros(8, float)
+    data[0] = float(raw_data[0])
+    data[1] = float(raw_data[1])
+    if raw_data[2] == 'normal':
+        data[2] = 0.
+    else:
+        data[2] = 1.
+
+    if raw_data[3] == 'normal':
+        data[3] = 0.
+    else:
+        data[3] = 1.
+
+    data[4] = float(raw_data[4])
+    data[5] = float(raw_data[5])
+
+    if raw_data[6] == 'yes':
+        data[6] = 0.
+    else:
+        data[6] = 1.
+
+    if raw_data[7] == 'yes':
+        data[7] = 0.
+    else:
+        data[7] = 1.
+
+    print(data)
+
+    data[0] = (data[0] - 1.005) / 0.02
+
+    data[1] = (data[1]) / 5
+
+    data[4] = (data[4] - 3.1) / 14.7
+
+    data[5] = (data[5] - 9) / 45
+
+    print(data)
+
+    clf = joblib.load('classifier.pkl')
+
+    prediction = clf.predict([data])[0]
+
+    print(prediction)
+    if prediction == '1':
+        return "This person is CKD positive"
+    else:
+        return "This person is CKD negative"

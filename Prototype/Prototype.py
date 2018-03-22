@@ -1,5 +1,6 @@
 import os
 from flask import Flask, redirect, url_for, render_template, request
+import metrics
 from werkzeug.utils import secure_filename
 from LR import *
 
@@ -31,7 +32,7 @@ def upload_file():
         fo.writelines(lines_of_text)
         fo.close()
 
-        temp = main()
+        temp = metrics.classify()
 
         return temp
 
