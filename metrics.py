@@ -173,7 +173,7 @@ def preprocess(k=24, fsiter=100, scaling=True):
             if not mask[x]:
                 data = np.delete(data, x, 1)
     data, target = SMOTE().fit_sample(data, target)
-    print(data[1])
+    print(data[300])
     return data, target
 
 def data():
@@ -209,27 +209,27 @@ def classify():
     data[0] = float(raw_data[0])
     data[1] = float(raw_data[1])
     if raw_data[2] == 'normal':
-        data[2] = 0.
-    else:
         data[2] = 1.
+    else:
+        data[2] = 0.
 
     if raw_data[3] == 'normal':
-        data[3] = 0.
-    else:
         data[3] = 1.
+    else:
+        data[3] = 0.
 
     data[4] = float(raw_data[4])
     data[5] = float(raw_data[5])
 
     if raw_data[6] == 'yes':
-        data[6] = 0.
-    else:
         data[6] = 1.
+    else:
+        data[6] = 0.
 
     if raw_data[7] == 'yes':
-        data[7] = 0.
-    else:
         data[7] = 1.
+    else:
+        data[7] = 0.
 
     print(data)
 
@@ -245,6 +245,7 @@ def classify():
 
     clf = joblib.load('classifier.pkl')
 
+    print([data])
     prediction = clf.predict([data])[0]
 
     print(prediction)
