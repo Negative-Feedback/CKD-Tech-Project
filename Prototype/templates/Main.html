@@ -24,6 +24,28 @@
             });
         });
 
+        $(function() {
+            $('#calculate').click(function() {
+                event.preventDefault();
+                //var f1 = document.getElementsByName("f1").value;
+                //var f2 = document.getElementsByName("f2").value;
+                var data_str = '';
+                for (var j = 0; j < 8; j++) {
+                         data_str = data_str + document.getElementsByName("f" + (j + 1) + "")[0].value;
+                         if (j != 7){
+                             data_str = data_str + ',';
+                         }
+                     }
+                $("#file_status").text(data_str);
+                $.ajax({
+                    type: 'POST',
+                    url: '/upload_file',
+                    data: data_str,
+                    tType: false,
+                    processData: false,
+                });
+            });
+        });
     </script>
     <script type=text/javascript src="{{url_for('static', filename='Main.js') }}"></script>
     <meta charset="UTF-8">
@@ -86,7 +108,7 @@
             </table>
         </div>
         <br><br><br><br>
-        <button type="button">Calculate</button>
+        <button id="calculate" type="button">Calculate</button>
         <output name="result" for=""></output>
     </div>
 </body>
