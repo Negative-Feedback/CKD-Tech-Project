@@ -8,13 +8,13 @@
             $('#upload').click(function() {
                 event.preventDefault();
                 var form_data = new FormData($('#upload_file')[0]);
-                $("#file_status").text('Upload Successful');
+                //$("#file_status").text('Upload Successful');
                 var fileList = document.getElementById("file_dat").files; /* now you can work with the file list */
                 var reader = new FileReader();
                 reader.onload = function(){
                      var dataText = reader.result.substring(reader.result.indexOf("@data") + 7);
                      var data = dataText.split(",");
-                     $("#file_status").text(dataText);
+                     //$("#file_status").text(dataText);
                      //document.write(reader.result.substring(0, 200))
                      for (i = 0; i < 8; i++) {
                          document.getElementsByName("f" + (i + 1) + "")[0].value = data[i];
@@ -24,6 +24,30 @@
             });
         });
 
+        $(function() {
+            $('#calculate').click(function() {
+                event.preventDefault();
+                var data_str = '';
+                for (var j = 0; j < 8; j++) {
+                         data_str = data_str + document.getElementsByName("f" + (j + 1) + "")[0].value;
+                         if (j != 7){
+                             data_str = data_str + ',';
+                         }
+                     }
+                //$("#file_status").text(data_str);
+                $.ajax({
+                    type: 'POST',
+                    url: '/upload_file',
+                    data: data_str,
+                    tType: false,
+                    processData: false,
+                    success: function (data) {
+                        $("#result").text(data);
+                    },
+                });
+
+            });
+        });
     </script>
     <script type=text/javascript src="{{url_for('static', filename='Main.js') }}"></script>
     <meta charset="UTF-8">
@@ -86,8 +110,8 @@
             </table>
         </div>
         <br><br><br><br>
-        <button type="button">Calculate</button>
-        <output name="result" for=""></output>
+        <button id="calculate" type="button">Calculate</button>
+        <p><span id="result"></span></p>
     </div>
 </body>
 </html>
