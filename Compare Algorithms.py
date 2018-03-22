@@ -14,20 +14,21 @@ classifiers = {'Support Vector Machine': svm.SVC(C=1, kernel='linear', decision_
                'Logistic Regression': LogisticRegression(C=1000),
                'Nearest Neighbours': KNeighborsClassifier(n_neighbors=1),
                'Decision Tree': tree.DecisionTreeClassifier(),
-               'Neural Network': MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=6, random_state=1)}
+               'Neural Network': MLPClassifier(solver='lbfgs', alpha=0.001, hidden_layer_sizes=54, random_state=1)}
 datasets = {'Support Vector Machine': metrics.preprocess(k=13, fsiter=1000),
             'Decision Tree': metrics.preprocess(k=6, fsiter=1000, scaling=False),
             'Random Forest': metrics.preprocess(k=6, fsiter=1000, scaling=False),
             'Logistic Regression': metrics.preprocess(k=11, fsiter=1000),
             'Neural Network': metrics.preprocess(k=8, fsiter=1000, scaling=True),
-            'Nearest Neighbours': metrics.preprocess(k=8, fsiter=1000, scaling=False)}
+            'Nearest Neighbours': metrics.preprocess(k=8, fsiter=1000)}
 
 accuracies = []
 sensitivities = []
 specificities = []
 for key in classifiers.keys():
+    print(key)
     data, target = datasets[key]
-    temp = metrics.repeatedCrossValidatedScores(data, target, classifiers[key], iterations=100, cv=3)
+    temp = metrics.repeatedCrossValidatedScores(data, target, classifiers[key], iterations=100, cv=10)
     metrics.printAverages(key, temp)
     accuracies.append(np.average(temp['test_accuracy']) - 0.9)
     sensitivities.append(np.average(temp['test_sensitivity']) - 0.9)
