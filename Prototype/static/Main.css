@@ -7,15 +7,63 @@ body {
 
 h1 {
 	text-align: center;
-	font-size: 64px;
+	font-size: 72px;
 	background-color: #5c755e;
 	margin: 10px;
 	height: 90px;
 	border-radius: 5px;
+	padding: 10px;
 }
 
+#HomeButton{
+	margin-left: 10px;
+	font-size: 30px;
+	text-align: center;
+	display: inline-block;
+	background-color: #5c755e;
+	border-top: 2px solid black;
+	border-right: none;
+	border-bottom: 2px solid black;
+	border-left: 2px solid black;
+	padding-left: 338px;
+	padding-right: 338px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	margin-bottom: 15px;
+}
+
+#AboutButton{
+	font-size: 30px;
+	text-align: center;
+	display: inline-block;
+	background-color: #5c755e;
+	border-top: 2px solid black;
+	border-right: 2px solid black;
+	border-bottom: 2px solid black;
+	border-left: none;
+	padding-left: 338px;
+	padding-right: 338px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	margin-bottom: 5px;
+}
+
+#HomeButton:hover{
+	background-color: white;
+	color: #5c755e;
+
+}
+
+#AboutButton:hover{
+	background-color: white;
+	color: #5c755e;
+}
+
+
 #Home {
+	border-radius: 5px;
 	position: absolute;
+	margin: 10px;
 	right: 0px;
 	left: 0%;
 	display: inline-block;
@@ -24,7 +72,7 @@ h1 {
 	border: 2px solid black;
 	padding: 10px 0;
 	text-align: center;
-	background-color: lightgreen;
+	background-color: #5c755e;
 }
 #About {
 	position: absolute;
