@@ -19,3 +19,4 @@ scores = metrics.repeatedCrossValidatedScores(data, target, kn, cv=10, iteration
 
 print("title/tp/tn/fp/fn/f1/precision/sensitivity/specificity/accuracy")
 metrics.printAverages("K Nearest Neighbors", scores)
+
