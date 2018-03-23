@@ -1,5 +1,5 @@
 body {
-	background-color: #9c9f84;
+	background-color: #baddff;
 	margin: 0px;
 	font-family: Verdana, Georgia, Serif;
 	font-size: 14px;
@@ -8,7 +8,7 @@ body {
 h1 {
 	text-align: center;
 	font-size: 72px;
-	background-color: #5c755e;
+	background-color: #499abf;
 	margin: 10px;
 	height: 90px;
 	border-radius: 5px;
@@ -20,7 +20,7 @@ h1 {
 	font-size: 30px;
 	text-align: center;
 	display: inline-block;
-	background-color: #5c755e;
+	background-color: white;
 	border-top: 2px solid black;
 	border-right: none;
 	border-bottom: 2px solid black;
@@ -36,7 +36,7 @@ h1 {
 	font-size: 30px;
 	text-align: center;
 	display: inline-block;
-	background-color: #5c755e;
+	background-color: white;
 	border-top: 2px solid black;
 	border-right: 2px solid black;
 	border-bottom: 2px solid black;
@@ -49,14 +49,14 @@ h1 {
 }
 
 #HomeButton:hover{
-	background-color: white;
-	color: #5c755e;
+	background-color: #a2a7ff;
+	color: white;
 
 }
 
 #AboutButton:hover{
-	background-color: white;
-	color: #5c755e;
+	background-color: #a2a7ff;
+	color: white;
 }
 
 
@@ -72,7 +72,7 @@ h1 {
 	border: 2px solid black;
 	padding: 10px 0;
 	text-align: center;
-	background-color: #5c755e;
+	background-color: #ADD8E6;
 }
 #About {
 	position: absolute;
