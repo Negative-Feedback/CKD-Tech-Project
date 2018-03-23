@@ -15,7 +15,7 @@ for features in range(1, 25):
         metrics.printAverages((features, neuron), temp)
         if np.average(temp['test_accuracy']) > maxacc:
             maxacc = np.average(temp['test_accuracy'])
-    neuron_accuracy.append(np.average(temp['test_accuracy']))
+    neuron_accuracy.append(maxacc)
     sens_range.append(features)
 
 for x in range(np.size(sens_range)):
