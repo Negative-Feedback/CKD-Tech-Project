@@ -1,9 +1,8 @@
 import os
+import arff
+import numpy as np
+from sklearn.externals import joblib
 from flask import Flask, redirect, url_for, render_template, request
-import metrics
-from werkzeug.utils import secure_filename
-from LR import *
-
 
 UPLOAD_FOLDER = '/Prototype'
 #ALLOWED_EXTENSIONS = set(['arff'])
@@ -24,17 +23,69 @@ def Main_file():
 @app.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        # get data from webpage
         data = request.get_data()
+
+        # remove unnecessary characters
         data = str(data)
         data = data[2:-1]
-        fo = open("temp_upload.arff", "w")
-        lines_of_text = ["@relation Chronic_Kidney_Disease", "\n", "\n", "@attribute 'sg' {1.005,1.010,1.015,1.020,1.025}", "\n" ,"@attribute 'al' {0,1,2,3,4,5}", "\n" ,"@attribute 'rbc' {normal,abnormal}", "\n" ,"@attribute 'pc' {normal,abnormal}", "\n" ,"@attribute 'hemo' numeric", "\n" ,"@attribute 'pcv' numeric", "\n" ,"@attribute 'htn' {yes,no}", "\n" ,"@attribute 'dm' {yes,no}" ,"\n", "\n" ,"@data", "\n", data]
-        fo.writelines(lines_of_text)
-        fo.close()
 
-        temp = metrics.classify()
+        # classify the data
+        return classify(data)
 
-        return temp
+
+def classify(str_data):
+    # retrieve data
+    raw_data = str_data.split(",")
+
+    # transfer data into classifier-readable format
+    data = np.zeros(8, float)
+
+    # cast float data to floats
+    data[0] = float(raw_data[0])
+    data[1] = float(raw_data[1])
+
+    # cast binary data to float
+    if raw_data[2] == 'normal':
+        data[2] = 1.
+    else:
+        data[2] = 0.
+    if raw_data[3] == 'normal':
+        data[3] = 1.
+    else:
+        data[3] = 0.
+
+    # cast float data to floats
+    data[4] = float(raw_data[4])
+    data[5] = float(raw_data[5])
+
+    # cast binary data to float
+    if raw_data[6] == 'yes':
+        data[6] = 1.
+    else:
+        data[6] = 0.
+    if raw_data[7] == 'yes':
+        data[7] = 1.
+    else:
+        data[7] = 0.
+
+    # scale float data the same way the training data was
+    data[0] = (data[0] - 1.005) / 0.02
+    data[1] = (data[1]) / 5
+    data[4] = (data[4] - 3.1) / 14.7
+    data[5] = (data[5] - 9) / 45
+
+    # load  the classifier
+    clf = joblib.load('classifier.pkl')
+
+    # classify the patient
+    prediction = clf.predict([data])[0]
+
+    # return the result
+    if prediction == '1':
+        return "This person is CKD positive"
+    else:
+        return "This person is CKD negative"
 
 
 if __name__ == '__main__':
