@@ -102,9 +102,9 @@ def classify(str_data):
 
     # return the result
     if prediction == '1':
-        return "This person is CKD positive (%0.2f%% certainty)" % (certainty * 100)
+        return "This person is CKD positive (estimated %0.2f%% certainty)" % (certainty * 100)
     else:
-        return "This person is CKD negative (%0.2f%% certainty)" % (certainty * 100)
+        return "This person is CKD negative (estimated %0.2f%% certainty)" % (certainty * 100)
 
 def returnCertainty(raw_data):
     data, target = metrics.preprocess(k=8, fsiter=10)
