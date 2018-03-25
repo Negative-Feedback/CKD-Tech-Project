@@ -1,0 +1,13 @@
+@relation Chronic_Kidney_Disease
+
+@attribute 'sg' {1.005,1.010,1.015,1.020,1.025}
+@attribute 'al' {0,1,2,3,4,5}  
+@attribute 'rbc' {normal,abnormal}
+@attribute 'pc' {normal,abnormal} 
+@attribute 'hemo' numeric
+@attribute 'pcv' numeric
+@attribute 'htn' {yes,no}
+@attribute 'dm' {yes,no}
+
+@data
+?,?,?,?,?,?,?,?

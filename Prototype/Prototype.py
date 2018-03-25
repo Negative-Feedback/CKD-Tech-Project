@@ -1,8 +1,10 @@
 import os
 import arff
+from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 from sklearn.externals import joblib
 from flask import Flask, redirect, url_for, render_template, request
+import metrics
 
 UPLOAD_FOLDER = '/Prototype'
 #ALLOWED_EXTENSIONS = set(['arff'])
@@ -10,6 +12,8 @@ UPLOAD_FOLDER = '/Prototype'
 app = Flask(__name__)
 #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+defaults = [1.0174079320113256, 1.0169491525423728, 0.8104838709677419, 0.7731343283582089,
+            12.526436781609195, 38.88449848024316, 0.3693467336683417, 0.3442211055276382]
 
 @app.route('/')
 def Main_file():
@@ -38,6 +42,12 @@ def classify(str_data):
     # retrieve data
     raw_data = str_data.split(",")
 
+    certainty = returnCertainty(raw_data)
+
+    for x in range(8):
+        if raw_data[x] == "?":
+            raw_data[x] = str(defaults[x])
+
     # transfer data into classifier-readable format
     data = np.zeros(8, float)
 
@@ -48,12 +58,17 @@ def classify(str_data):
     # cast binary data to float
     if raw_data[2] == 'normal':
         data[2] = 1.
-    else:
+    elif raw_data[2] == 'abnormal':
         data[2] = 0.
+    else:
+        data[2] = float(raw_data[2])
+
     if raw_data[3] == 'normal':
         data[3] = 1.
-    else:
+    elif raw_data[3] == 'abnormal':
         data[3] = 0.
+    else:
+        data[3] = float(raw_data[3])
 
     # cast float data to floats
     data[4] = float(raw_data[4])
@@ -62,12 +77,16 @@ def classify(str_data):
     # cast binary data to float
     if raw_data[6] == 'yes':
         data[6] = 1.
-    else:
+    elif raw_data[6] == 'no':
         data[6] = 0.
+    else:
+        data[6] = float(raw_data[6])
     if raw_data[7] == 'yes':
         data[7] = 1.
-    else:
+    elif raw_data[7] == 'no':
         data[7] = 0.
+    else:
+        data[7] = float(raw_data[7])
 
     # scale float data the same way the training data was
     data[0] = (data[0] - 1.005) / 0.02
@@ -83,9 +102,17 @@ def classify(str_data):
 
     # return the result
     if prediction == '1':
-        return "This person is CKD positive"
+        return "This person is CKD positive (%0.2f%% certainty)" % (certainty * 100)
     else:
-        return "This person is CKD negative"
+        return "This person is CKD negative (%0.2f%% certainty)" % (certainty * 100)
+
+def returnCertainty(raw_data):
+    data, target = metrics.preprocess(k=8, fsiter=10)
+    for x in range(7, -1, -1):
+        if raw_data[x] == "?":
+            data = np.delete(data, x, 1)
+    temp = metrics.repeatedCrossValidatedScores(data, target, KNeighborsClassifier(n_neighbors=1), iterations=1, cv=10)
+    return np.average(temp['test_accuracy'])
 
 
 if __name__ == '__main__':

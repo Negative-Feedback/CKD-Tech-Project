@@ -21,22 +21,31 @@
                              if (data[i] == "normal") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "0";
                              }
-                             else{
+                             else if (data[i] == "abnormal") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "1";
+                             }
+                             else {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "2";
                              }
                          }
                          if(i == 6,7){
                              if (data[i] == "yes") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "0";
                              }
-                             else{
+                             else if (data[i] == "no") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "1";
+                             }
+                             else {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "2";
                              }
                          }
                          if(i == 4,5){
                              document.getElementsByName("f" + (i + 1) + "")[0].value = data[i];
                          }
                          if(i == 1){
+                             if (data[i] == "?") {
+                                 data[i] = "6";
+                             }
                              document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = parseInt(data[i]);
                          }
                          if(i == 0){
@@ -54,6 +63,9 @@
                              }
                              if (data[i] == "1.025") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "4";
+                             }
+                             else {
+                                 document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "5";
                              }
                          }
                      }
@@ -122,6 +134,7 @@
                           <option value="1.015">1.015</option>
                           <option value="1.020">1.020</option>
                           <option value="1.025">1.025</option>
+                          <option value="?">?</option>
                         </select>
                     </th>
                     <th>
@@ -133,6 +146,7 @@
                           <option value="3">3</option>
                           <option value="4">4</option>
                           <option value="5">5</option>
+                          <option value="?">?</option>
                         </select>
                     </th>
                     <th>
@@ -140,6 +154,7 @@
                         <select name="f3">
                           <option value="normal">normal</option>
                           <option value="abnormal">abnormal</option>
+                          <option value="?">?</option>
                         </select>
                     </th>
                     <th>
@@ -147,6 +162,7 @@
                         <select name="f4">
                           <option value="normal">normal</option>
                           <option value="abnormal">abnormal</option>
+                          <option value="?">?</option>
                         </select>
                     </th>
                     <th>
@@ -162,6 +178,7 @@
                         <select name="f7">
                           <option value="yes">Yes</option>
                           <option value="no">No</option>
+                          <option value="?">?</option>
                         </select>
                     </th>
                     <th>
@@ -169,6 +186,7 @@
                         <select name="f8">
                           <option value="yes">Yes</option>
                           <option value="no">No</option>
+                          <option value="?">?</option>
                         </select>
                     </th>
                 </tr>
