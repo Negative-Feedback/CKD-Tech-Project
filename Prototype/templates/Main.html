@@ -111,6 +111,22 @@
 
 
 <div id="About">
+    <h2> What is Chronic Kidney Disease? </h2>
+    <p> In general, Chronic Kidney Disease (CKD) describes the gradual loss of kidney function.
+        Kidneys are responsible for filtering waste and excess fluids from our blood, which are then excreted in our urine.
+        When CKD reaches its advanced stages, dangerous levels of fluids, electrolytes, and wastes can build up in our bodies.
+        The progression of CKD may lead to increased chances of heart stroke, hyperlipidemia, anemia, and metabolic bone disease.</p>
+    <h3> How does the Program Work? </h3>
+    <p> The program predicts whether or not a patient has CKD by using the K-Nearest Neighbours algorithm.
+        The program already contains data from patients with CKD from the Apollo Hospital in India.
+        When the medical practitioner enters in their client’s data,
+        the algorithm plots all the data and determines the K closest data points to that of the patient.
+        These data points are then compared to see how many of them represent patients with and without CKD.
+        Depending on which classification has more data points, the algorithm classifies the patient as having CKD or not.</p>
+    <h4> Performance </h4>
+    <img scr="neighbours.png">
+    <img scr="features.png">
+
 
 </div>
 <div id="Home">
@@ -126,7 +142,7 @@
 
             <table style="width:100%">
                 <tr>
-                    <th>
+                    <th text-align: left;>
                         Specific gravity<br>
                         <select name="f1">
                           <option value="1.005">1.005</option>
