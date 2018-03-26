@@ -42,8 +42,10 @@ def classify(str_data):
     # retrieve data
     raw_data = str_data.split(",")
 
+    # get certainty estimation
     certainty = returnCertainty(raw_data)
 
+    # process missing data
     for x in range(8):
         if raw_data[x] == "?":
             raw_data[x] = str(defaults[x])
@@ -107,10 +109,15 @@ def classify(str_data):
         return "This person is CKD negative (estimated %0.2f%% certainty)" % (certainty * 100)
 
 def returnCertainty(raw_data):
-    data, target = metrics.preprocess(k=8, fsiter=10)
+    # quickly train a model to figure out how accurate it is with the given features
+    data, target = metrics.preprocess(k=8, fsiter=1)
+
+    # delete columns that weren't given
     for x in range(7, -1, -1):
         if raw_data[x] == "?":
             data = np.delete(data, x, 1)
+
+    # use cross validation to estimate the accuracy of the classifier
     temp = metrics.repeatedCrossValidatedScores(data, target, KNeighborsClassifier(n_neighbors=1), iterations=1, cv=10)
     return np.average(temp['test_accuracy'])
 

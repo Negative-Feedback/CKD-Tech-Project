@@ -6,7 +6,7 @@ import numpy as np
 data, target = metrics.preprocess(k=8, fsiter=1000)
 clf = KNeighborsClassifier(n_neighbors=1)
 
-scores = metrics.repeatedCrossValidatedScores(data, target, clf, iterations=3, cv=10)
+scores = metrics.repeatedCrossValidatedScores(data, target, clf, iterations=5000, cv=10)
 
 metrics.printAverages('clf', scores)
 
