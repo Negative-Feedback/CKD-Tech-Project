@@ -124,12 +124,26 @@
         These data points are then compared to see how many of them represent patients with and without CKD.
         Depending on which classification has more data points, the algorithm classifies the patient as having CKD or not.</p>
     <h4> Performance </h4>
-    <img scr="neighbours.png">
-    <img scr="features.png">
 
+    <table id="imagesTable">
+        <tr>
+            <td> <img src="{{url_for('static', filename='neighbours.png' )}}" width:30%/> </td>
+            <td> <img src="{{url_for('static', filename='features.png' )}}" width:30%/> </td>
+            <td> <img src="{{url_for('static', filename='roc.png' )}}" width:30%/> </td>
+        </tr>
+
+        <tr>
+            <td> <p>Description of above image1</p> </td>
+            <td> <p>Description of above image2</p> </td>
+            <td> <p>Description of above image3</p> </td>
+        </tr>
+    </table>
 
 </div>
 <div id="Home">
+    <p>Please upload a file containing the patient's data or enter in the data manually.
+        While it is not required that all data field are
+        Any missing values should be indicated with a '?'. </p>
         <div>
             <form id="upload_file">
                  <input type="file" name = "file" id="file_dat"/>
