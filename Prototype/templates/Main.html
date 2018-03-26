@@ -106,7 +106,13 @@
 <body onload="run()">
 <div>
     <h1>Chronic Kidney Disease Predictor</h1>
-    <button id='HomeButton' type="button" onclick="Home_function()">Home</button><button id = 'AboutButton' type="button" onclick="About_function()">About</button>
+    <table border="0px solid black" width="99.5%">
+        <tr text-align="center">
+            <td> <button id='HomeButton' type="button" onclick="Home_function()">Home</button> </td>
+            <td> <button id = 'AboutButton' type="button" onclick="About_function()">About</button> </td>
+
+        </tr>
+    </table>
 </div>
 
 
@@ -127,15 +133,15 @@
 
     <table id="imagesTable">
         <tr>
-            <td> <img src="{{url_for('static', filename='neighbours.png' )}}" width:30%/> </td>
-            <td> <img src="{{url_for('static', filename='features.png' )}}" width:30%/> </td>
-            <td> <img src="{{url_for('static', filename='roc.png' )}}" width:30%/> </td>
+            <td> <img src="{{url_for('static', filename='neighbours.png' )}}" width=480px > </td>
+            <td> <img src="{{url_for('static', filename='features.png' )}}" width=480px> </td>
+            <td> <img src="{{url_for('static', filename='roc.png' )}}"width=480px></td>
         </tr>
 
         <tr>
-            <td align="center"> Description of above image1 </td>
-            <td align="center"> Description of above image2 </td>
-            <td align="center"> Description of above image3 </td>
+            <td align="left">      Description of above image1 </td>
+            <td align="left">      Description of above image2 </td>
+            <td align="left">      Description of above image3 </td>
         </tr>
     </table>
 
@@ -156,7 +162,7 @@
 
             <table style="width:100%">
                 <tr>
-                    <th text-align: left;>
+                    <th>
                         Specific gravity<br>
                         <select name="f1">
                           <option value="1.005">1.005</option>
