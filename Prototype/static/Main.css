@@ -111,6 +111,7 @@ p{
 
 #imagesTable{
 	width: 100%;
+    border-collapse: collapse;
 }
 
 #imagesTable td {

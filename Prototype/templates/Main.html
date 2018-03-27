@@ -132,13 +132,13 @@
     <h4> Performance </h4>
 
     <table id="imagesTable">
-        <tr>
+        <tr width="50%">
             <td> <img src="{{url_for('static', filename='neighbours.png' )}}" width=480px > </td>
             <td> <img src="{{url_for('static', filename='features.png' )}}" width=480px> </td>
             <td> <img src="{{url_for('static', filename='roc.png' )}}"width=480px></td>
         </tr>
 
-        <tr>
+        <tr width="50%">
             <td align="left"> The optimal value for K was determined by iteratively increasing the number of neighbours (K) and computing the repeated cross validation error.
                               It was determined that K = 1 achieves the best general accuracy for the algorithm with <0.01% error.
                               As the K value is increased, the predictive model becomes less accurate.
@@ -150,9 +150,10 @@
 
 </div>
 <div id="Home">
-    Please upload a file containing the patient's data or enter in the data manually.
-        While it is not required that all data field are entered,
-        any missing values should be indicated with a '?'.<br><br>
+    Please upload a file containing the patient's data or enter the data manually.
+    Fill in as many data fields as possible for the most accurate results.
+    Any missing values should be indicated with a '?'.
+<br><br>
         <div>
             <form id="upload_file">
                  <input type="file" name = "file" id="file_dat"/>
