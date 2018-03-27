@@ -42,6 +42,12 @@ p{
 	text-style:Courier New;
 }
 
+p2{
+	text-align: left;
+	font-size: 12px;
+	text-style:Courier New;
+}
+
 #HomeButton{
 	margin-left: 10px;
 	width:100%;
