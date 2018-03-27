@@ -121,7 +121,8 @@ p2{
 }
 
 #imagesTable td {
-	border: 6px solid lightgreen;
+	border: 3px solid lightgreen;
+	vertical-align: text-top;
 }
 
 #result {
