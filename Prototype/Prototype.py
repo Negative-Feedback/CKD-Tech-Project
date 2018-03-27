@@ -41,7 +41,7 @@ def upload_file():
 def classify(str_data):
     # retrieve data
     raw_data = str_data.split(",")
-
+    print(raw_data[0])
     # get certainty estimation
     certainty = returnCertainty(raw_data)
 
