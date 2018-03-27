@@ -169,7 +169,6 @@ def preprocess(k=24, fsiter=100, scaling=True):
             if not mask[x]:
                 data = np.delete(data, x, 1)
     data, target = SMOTE().fit_sample(data, target)
-    print(data[300])
     return data, target
 
 
