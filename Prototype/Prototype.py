@@ -95,7 +95,7 @@ def classify(str_data):
     data[4] = (data[4] - 3.1) / 14.7
     data[5] = (data[5] - 9) / 45
 
-    # load  the classifier
+    # load the classifier
     clf = joblib.load('classifier.pkl')
 
     # classify the patient
