@@ -116,3 +116,7 @@ p{
 #imagesTable td {
 	border: 6px solid lightgreen;
 }
+
+#result {
+	text-align: center;
+}

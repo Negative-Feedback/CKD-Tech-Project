@@ -52,16 +52,16 @@
                              if (data[i] == "1.005") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "0";
                              }
-                             if (data[i] == "1.010") {
+                             else if (data[i] == "1.010") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "1";
                              }
-                             if (data[i] == "1.015") {
+                             else if (data[i] == "1.015") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "2";
                              }
-                             if (data[i] == "1.020") {
+                             else if (data[i] == "1.020") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "3";
                              }
-                             if (data[i] == "1.025") {
+                             else if (data[i] == "1.025") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "4";
                              }
                              else {
@@ -150,9 +150,9 @@
 
 </div>
 <div id="Home">
-    <p>Please upload a file containing the patient's data or enter in the data manually.
-        While it is not required that all data field are
-        Any missing values should be indicated with a '?'. </p>
+    Please upload a file containing the patient's data or enter in the data manually.
+        While it is not required that all data field are entered,
+        any missing values should be indicated with a '?'.<br><br>
         <div>
             <form id="upload_file">
                  <input type="file" name = "file" id="file_dat"/>
@@ -206,11 +206,11 @@
                     </th>
                     <th>
                         Hemoglobin (gms)<br>
-                        <input type="text" name="f5" size="7" value="gms">
+                        <input type="text" name="f5" size="7" value="">
                     </th>
                     <th>
                         Packed Cell Volume<br>
-                        <input type="text" name="f6" size="7" value="numerical">
+                        <input type="text" name="f6" size="7" value="">
                     </th>
                     <th>
                         Hypertension<br>
@@ -232,8 +232,8 @@
             </table>
         </div>
         <br><br><br><br>
-        <button id="calculate" type="button">Calculate</button>
-        <p><span id="result"></span></p>
+        <button id="calculate" type="button">Calculate</button><br><br>
+        <span id="result"></span>
     </div>
 </body>
 </html>

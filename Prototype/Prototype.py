@@ -41,7 +41,6 @@ def upload_file():
 def classify(str_data):
     # retrieve data
     raw_data = str_data.split(",")
-    print(raw_data[0])
     # get certainty estimation
     certainty = returnCertainty(raw_data)
 
@@ -110,7 +109,7 @@ def classify(str_data):
 
 def returnCertainty(raw_data):
     # quickly train a model to figure out how accurate it is with the given features
-    data, target = metrics.preprocess(k=8, fsiter=1)
+    data, target = metrics.preprocess(k=8, fsiter=10)
 
     # delete columns that weren't given
     for x in range(7, -1, -1):

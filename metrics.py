@@ -148,15 +148,6 @@ def preprocess(k=24, fsiter=100, scaling=True):
 
     # inserts the average into the missing spots
     data = imp.fit_transform(data)
-    print("here")
-    print(data[13][2])
-    print(data[13][3])
-    print(data[0][5])
-    print(data[5][6])
-    print(data[23][14])
-    print(data[23][15])
-    print(data[288][18])
-    print(data[288][19])
 
     if scaling:
         minmax_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -166,10 +157,8 @@ def preprocess(k=24, fsiter=100, scaling=True):
     if k < 24:
         while True:
             scores = FeatureSelection(data, target, iterations=fsiter)
-            print(scores)
             # remove unnecessary columns
             sortedScores = np.sort(scores)
-            print(sortedScores)
             if sortedScores[16] == scores[6]:
                 break
         mask = np.ones(len(sortedScores), dtype=bool)
