@@ -103,9 +103,9 @@ def classify(str_data):
 
     # return the result
     if prediction == '1':
-        return "This person is CKD positive (estimated %0.2f%% certainty)" % (certainty * 100)
+        return "This person is CKD positive"
     else:
-        return "This person is CKD negative (estimated %0.2f%% certainty)" % (certainty * 100)
+        return "This person is CKD negative"
 
 def returnCertainty(raw_data):
     # quickly train a model to figure out how accurate it is with the given features
