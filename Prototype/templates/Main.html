@@ -5,18 +5,16 @@
     <script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
     <script>
         $(function() {
-            $('#upload').click(function() {
-                event.preventDefault();
-                var form_data = new FormData($('#upload_file')[0]);
-                //$("#file_status").text('Upload Successful');
+            $('#upload').click(function() {//When The upload button is pressed
+                event.preventDefault();//Stop the selection boxes from going to default value
+                var form_data = new FormData($('#upload_file')[0]);//Stores data from the file upload form into the string
                 var fileList = document.getElementById("file_dat").files; /* now you can work with the file list */
                 var reader = new FileReader();
                 reader.onload = function(){
                      var dataText = reader.result.substring(reader.result.indexOf("@data") + 7);
-                     var data = dataText.split(",");
-                     //$("#file_status").text(dataText);
-                     //document.write(reader.result.substring(0, 200))
-                     for (i = 0; i < 8; i++) {
+                     var data = dataText.split(",");//reads the data and splits it when a comma is detected
+
+                     for (i = 0; i < 8; i++) {//loops through the parameter boxes storing data pertaining to each box
                          if(i == 2,3) {
                              if (data[i] == "normal") {
                                  document.getElementsByName("f" + (i + 1) + "")[0].selectedIndex = "0";
@@ -75,17 +73,17 @@
         });
 
         $(function() {
-            $('#calculate').click(function() {
+            $('#calculate').click(function() { //Runs the function when the calculate button is pressed
                 event.preventDefault();
                 var data_str = '';
-                for (var j = 0; j < 8; j++) {
-                             data_str = data_str + document.getElementsByName("f" + (j + 1) + "")[0].value;
+                for (var j = 0; j < 8; j++) {//loops through selection and text boxes to get the data contained
+                             data_str = data_str + document.getElementsByName("f" + (j + 1) + "")[0].value;//Adds the value to the string
                          if (j != 7){
-                             data_str = data_str + ',';
+                             data_str = data_str + ',';//Adds a comma after variable input if not end of string
                          }
                      }
-                //$("#file_status").text(data_str);
-                $.ajax({
+
+                $.ajax({//Sends the string to the server
                     type: 'POST',
                     url: '/upload_file',
                     data: data_str,
@@ -103,7 +101,7 @@
     <meta charset="UTF-8">
     <title>Prototype</title>
 </head>
-<body onload="run()">
+<body onload="run()"><!-- On page load runs the function run-->
 <div>
     <h1>Chronic Kidney Disease Predictor</h1>
     <table border="0px solid black" width="99.5%">
@@ -116,7 +114,7 @@
 </div>
 
 
-<div id="About">
+<div id="About"> <!-- Div About contains information about CKD with graphs-->
     <h2> What is Chronic Kidney Disease? </h2>
     <p> In general, Chronic Kidney Disease (CKD) describes the gradual loss of kidney function.
         Kidneys are responsible for filtering waste and excess fluids from our blood, which are then excreted in our urine.
@@ -151,21 +149,20 @@
     </table>
 
 </div>
-<div id="Home">
+<div id="Home"><!-- DIV Home contains the prototype-->
    <p2>Please upload a file containing the client's data or enter the data manually.
     Fill in as many data fields as possible to obtain the most accurate results.
     Any missing values should be indicated with a '?'.</p2>
 <br><br>
         <div>
-            <form id="upload_file">
+            <form id="upload_file"><!--Accepts a file from the user-->
                  <input type="file" name = "file" id="file_dat"/>
                  <input type = "submit" id="upload" value="Upload File"/>
               </form>
             <p><span id="file_status"></span></p>
             <br><br>
         </div>
-        <div>
-
+        <div><!--Selection and text box to hold user defined parameters-->
             <table style="width:100%">
                 <tr>
                     <th>
