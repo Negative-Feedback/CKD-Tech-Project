@@ -1,10 +1,6 @@
-import os
-import arff
-from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 from sklearn.externals import joblib
 from flask import Flask, redirect, url_for, render_template, request
-import metrics
 
 UPLOAD_FOLDER = '/Prototype'
 #ALLOWED_EXTENSIONS = set(['arff'])
@@ -41,8 +37,6 @@ def upload_file():
 def classify(str_data):
     # retrieve data
     raw_data = str_data.split(",")
-    # get certainty estimation
-    certainty = returnCertainty(raw_data)
 
     # process missing data
     for x in range(8):
@@ -106,19 +100,6 @@ def classify(str_data):
         return "This person is CKD positive"
     else:
         return "This person is CKD negative"
-
-def returnCertainty(raw_data):
-    # quickly train a model to figure out how accurate it is with the given features
-    data, target = metrics.preprocess(k=8, fsiter=10)
-
-    # delete columns that weren't given
-    for x in range(7, -1, -1):
-        if raw_data[x] == "?":
-            data = np.delete(data, x, 1)
-
-    # use cross validation to estimate the accuracy of the classifier
-    temp = metrics.repeatedCrossValidatedScores(data, target, KNeighborsClassifier(n_neighbors=1), iterations=1, cv=10)
-    return np.average(temp['test_accuracy'])
 
 
 if __name__ == '__main__':
